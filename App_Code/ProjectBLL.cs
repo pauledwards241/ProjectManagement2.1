@@ -89,7 +89,7 @@ public class ProjectBLL
     public  int InsertBasics(string _pCode, int _status, int _dep, double _lat, double _lon, string _projectName)
     {
         int row = -1;
-        row = Adapter.InsertBasics(_status, _dep, _lat,_lon, false,_projectName,_pCode);
+        row = Adapter.InsertBasics(_status, _dep, _lat,_lon, false,_projectName,_pCode, DateTime.Now);
 
         return row;
     }

@@ -97,4 +97,10 @@
     width:20px;
 }
 
+/* Details view */
+
+table.edit .readonly {
+    color: #fff;
+}
+
 

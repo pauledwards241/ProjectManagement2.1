@@ -52,12 +52,16 @@ public partial class Detail : System.Web.UI.Page
         if (!string.IsNullOrEmpty(ProjectID))
         {
             Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
+
             DetailsView2.DataSource = p;
 
             GenerateJobSheet(p);
 
             DetailsView2.DataBind();
+            DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
 
+            if (p.Rows[0]["AddedAt"] == DBNull.Value)
+                DetailsView2.Fields[17].Visible = false;
         }
     }
 
