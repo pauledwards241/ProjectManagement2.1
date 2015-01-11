@@ -1,0 +1,52 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage2.master.cs"
+    Inherits="MasterPage2" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Untitled Page</title>
+    <link href="_Asset/layout1.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/igoogle-classic.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/igoogle-common.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/GridView.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/Progress.css" rel="stylesheet" type="text/css" />
+    <link href="niceforms/niceforms-default.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.2.3.pack.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var marker;
+        var map;
+        var newmarker;
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="container">
+        <div id="header">
+        </div>
+        <div id="prim_links">
+            <div class="block block-menu" id="block-menu-2">
+                <h2 class="title">
+                    Primary links</h2>
+                <div class="content">
+                    <ul class="menu">
+                        <li class="leaf"><a href="map.aspx" title=""><span>Home</span></a></li>
+                        <li class="leaf"><a href="count.aspx" title=""><span>Project Count</span></a></li>
+                        <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
+                        <li class="leaf"><a href="#" title=""><span>Services</span></a></li>
+                        <li class="leaf"><a href="#" title=""><span>Careers</span></a></li>
+                        <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <asp:ContentPlaceHolder ID="ContentPlaceHodler1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div id="footer">
+            <img src="_Asset/images/bottom.png" />
+        </div>
+    </div>
+    </form>
+</body>
+</html>

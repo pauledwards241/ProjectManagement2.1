@@ -1,0 +1,101 @@
+using System;
+using System.Text;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
+public partial class ProjectManagement_Default : Page
+{
+    ProjectBLL _projectbll = new ProjectBLL();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        HtmlGenericControl body = (HtmlGenericControl) Page.Master.FindControl("MyBody");
+        //body.Attributes.Add("onload","var map; var marker; var newmarder");
+
+        body.Attributes.Add("onload", "initialize()");
+
+        body.Attributes.Add("onunload", "GUnload()");
+        if(!IsPostBack)
+        {
+            BindingData("Full",0);
+        }
+    }
+
+    public string GetIconPath()
+    {
+        StringBuilder iconpath = new StringBuilder("http://localhost:1500/ProjectManagement_new/GGIcon");
+        iconpath.Append("/");
+        iconpath.Append(Dropdown_Status.SelectedItem.Text.Trim());
+        iconpath.Append("/");
+        iconpath.Append(DropDownList_department.SelectedItem.Text.Trim());
+        iconpath.Append(".png");
+        return iconpath.ToString();
+    }
+
+    public void BindingData(string option, int id)
+    {
+        
+        Project.ProjectDataTable projectTable;
+        switch (option)
+        {
+            case "Full":
+                {
+                    projectTable = _projectbll.GetBasics();
+
+                    break;
+                }
+
+            case ("Status"):
+                {
+                    projectTable = _projectbll.GetDataByStatus(id);
+                    break;
+                }
+            case ("Department"):
+                {
+                    projectTable = _projectbll.getDatabyDepartment(id);
+                    break;
+                }
+            default:
+                {
+                    projectTable = _projectbll.GetBasics();
+
+                    break;
+                }
+        }
+
+        GridView1.DataSource = projectTable;
+        ClientScript.RegisterClientScriptBlock(this.GetType(), "add", "<script type='text/javascript'>adddatamarker(); </script>");
+        GridView1.DataBind();
+    }
+    protected void GridView1_RowDataBound(object sender, System.Web.UI.WebControls.GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            
+        }
+
+
+    }
+    protected void GridView1_PageIndexChanging(object sender, System.Web.UI.WebControls.GridViewPageEventArgs e)
+    {
+        GridView1.PageIndex = e.NewPageIndex;
+        GridView1.DataBind();
+    }
+    protected void GridView1_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
+    {
+
+    }
+    protected void BTNaddnew_Click(object sender, EventArgs e)
+    {
+        double lat = double.Parse(this._TxtLat.Value.ToString());
+        double lng = double.Parse(this._TxtLng.Value.ToString());
+        string project_code = this.TxtProjectCode.Text;
+        int row = _projectbll.InsertBasics(project_code,int.Parse(Dropdown_Status.SelectedValue),int.Parse(DropDownList_department.SelectedValue),lat,lng,)
+        int row=_projectbll.InsertBasics(project_code, int.Parse(Dropdown_Status.SelectedValue),
+                                 int.Parse(DropDownList_department.SelectedValue), 
+                                 lat, lng);
+        BindingData("Full",0);
+        //GridView1.DataBind();
+        return;
+    }
+}

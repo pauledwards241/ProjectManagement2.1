@@ -1,0 +1,81 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<%@ Register Assembly="GoogleMap" Namespace="Reimers.Map" TagPrefix="Reimers" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Mayer Brown Project Management System (Beta)</title>
+    <link type="text/css" rel="stylesheet" href="_Asset/style.css" />
+    <link href="_Asset/igoogle-classic.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/igoogle-common.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/GridView.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/Progress.css" rel="stylesheet" type="text/css" />
+    <link href="niceforms/niceforms-default.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.2.3.pack.js" type="text/javascript"></script>
+</head>
+<body runat="server" id="MyBody">
+    <script type="text/javascript">
+        var marker;
+        var map;
+        var newmarker;
+    </script>
+    <form id="form1" runat="server">
+    <div id="mborder">
+        <div id="header">
+            <div id="headcontent">
+            </div>
+            <!-- end: #searchfield -->
+        </div>
+        <!-- end: #headcontent -->
+    </div>
+    <!-- end: #header -->
+    <div id="prim_links">
+        <div class="block block-menu" id="block-menu-2">
+            <h2 class="title">
+                Primary links</h2>
+            <div class="content">
+                <ul class="menu">
+                    <li class="leaf"><a href="map.aspx" title=""><span>Home</span></a></li>
+                    <li class="leaf"><a href="count.aspx" title=""><span>Project Count</span></a></li>
+                    <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
+                    <li class="leaf"><a href="#" title=""><span>Services</span></a></li>
+                    <li class="leaf"><a href="#" title=""><span>Careers</span></a></li>
+                    <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end: #prim_links -->
+    <div id="content">
+        <div id="conndiv" style="width: 1000px;">
+            <asp:ContentPlaceHolder ID="ContentPlaceHoder1" runat="server">
+            </asp:ContentPlaceHolder>
+            <!-- end: #conn -->
+        </div>
+        <!-- end: #conndiv -->
+        <div id="footer">
+        </div>
+        <!-- end: #footer -->
+    </div>
+    <!-- end: #content -->
+    <div class="clear">
+    </div>
+    <!-- end: #mborder -->
+    <div id="footer2">
+        <div class="links">
+            <a href="/terms-and-conditions">Terms &amp; Conditions</a>||&nbsp; <a href="/privacy-policy">
+                Privacy Policy</a>||&nbsp; <a href="/site-map">Site Map</a>
+        </div>
+        <div class="copyright">
+            © Copyright Mayer Brown Ltd. All rights reserved 2006 || Design by Unigold 2000
+            Ltd.
+        </div>
+        <div class="company-info">
+            Company No: 3531997, Registered in England, Registered Office: Lion House, Oriental
+            Road, Woking, Surrey, GU22 8AP
+        </div>
+    </div>
+    <!-- end: #footer2 -->
+    </form>
+</body>
+</html>

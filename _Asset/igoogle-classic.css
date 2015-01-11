@@ -1,0 +1,68 @@
+﻿/* table style */
+table.igoogle-classic
+{
+	font-family:arial,sans-serif;
+	border:solid 1px #7aa5d6;
+}
+
+/* header cell style */
+.igoogle-classic th
+{
+    color:#3366cc;
+	border-right-color:#7aa5d6;
+	border-bottom-color:#7aa5d6;
+    background:#e5ecf9;
+}  
+
+/* cell styles */
+.igoogle-classic td
+{
+    border-bottom-color:#e5ecf9;	
+    border-right-color:#e5ecf9;	
+}
+
+/* mouseover row style */
+.igoogle-classic .row-over 
+{ 
+	background-color:#e5ecf9;
+}
+
+/* mouse select row style */
+.igoogle-classic .row-select 
+{ 
+	background-color:#7aa5d6;
+	color:#fff;
+}
+.jobsheet
+{	
+	border:solid 1px black;
+	 font-family:Arial;
+	 font-size:small;
+	 width:350px;
+}
+.jobsheet tr
+{
+}
+.jobsheet tr td
+{
+	padding: 3px 5px 0 0;
+	width:25%;
+}
+.heading1
+{
+	font-size:large;
+	font-family:Arial;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+.heading2
+{
+	font-size:medium;
+	font-family:Arial;
+	font-weight:bold;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+

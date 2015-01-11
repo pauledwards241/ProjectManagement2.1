@@ -1,0 +1,166 @@
+/**
+ * 100% height layout with header and footer
+ * ----------------------------------------------
+ * Feel free to copy/use/change/improve
+ */
+
+html,body {
+	margin:0;
+	padding:0;
+	/* needed for container min-height */
+	min-height:100%;
+	  background-image:		url(images/fadebkg.jpg);
+	  background-repeat:	repeat-x repeat;
+	font-family:arial,sans-serif;
+	font-size:small;
+	color:#666;
+}
+a:link, a:visited {
+  text-decoration: 		none;
+  font-weight: 				bold;
+  color:							#007ea2; 
+}
+a:hover {
+  color: 							#CCC;
+}
+
+
+h1 { 
+	font:1.5em georgia,serif; 
+	margin:0.5em 0;
+}
+
+h2 {
+	font:1.25em georgia,serif; 
+	margin:0 0 0.5em;
+}
+	h1, h2, a {
+		color:orange;
+	}
+
+p { 
+	line-height:1.5; 
+	margin:0 0 1em;
+}
+
+div#container {
+	position:relative; /* needed for footer positioning*/
+	margin:0 auto; /* center, not in IE5 */
+	width:1000px;
+	background:#f0f0f0;
+	
+	height:auto !important; /* real browsers */
+	height:100%; /* IE6: treaded as min-height*/
+
+	min-height:100%; /* real browsers */
+}
+
+div#header {
+	padding:0 0 150px 0;
+	border-bottom:1px double gray;
+	background-image:		url(images/topbar.png);
+	background-repeat:	no-repeat;
+}
+	div#header p 
+	{
+		
+		font-style:italic;
+		font-size:1.1em;
+		margin:0;
+	}
+
+div#content 
+{
+	height:auto !important; /* real browsers */
+	height:100%; /* IE6: treaded as min-height*/
+
+	min-height:100%; /* real browsers */
+	
+}
+	div#content p {
+		text-align:justify;
+		padding:0 1em;
+	}
+
+div#footer {
+	position:absolute;
+	width:100%;
+	bottom:0; /* stick to bottom */
+	background:#ddd;
+	border-top:1px double gray;
+	background-image: url(images/bottom.png) ;
+}
+
+	/**
+ * UNORDERED LISTS
+ */
+	#prim_links {
+	width: 							996px;
+	height: 						24px;
+	margin: 						0px;
+	border: 						2px solid #007ea2;
+	border-left: 				2px solid #007ea2;
+	border-right: 			3px solid #007ea2;
+	background-color: 	#fff;
+	margin-left:				0px
+}
+#prim_links .block {
+	border:							0px solid red;
+}
+#prim_links .block-menu {
+	border:							0px solid blue;
+}
+#prim_links .block-menu .content{
+	border:							0px solid blue;
+}
+
+#prim_links .block-menu h2.title {
+	visibility:					hidden;
+	height: 						0px;
+	padding:						0px;
+	margin:							0px;
+	line-height:				0px;
+	float:							left;
+}
+#prim_links .block-menu ul {
+	margin: 						0;
+	padding: 						0;
+}
+#prim_links .block-menu ul li {
+	list-style-type: 		none;
+	padding: 						0;
+	margin: 						0;
+	display: 						block;
+	float: 							left;
+	background-color:		#fff;
+	font: 							10px/20px "Lucida Grande", verdana, sans-serif;
+	text-align: 				center;	
+}
+#prim_links .block-menu a span {
+	display: 						block;
+	padding-top: 				1px;
+}
+#prim_links .block-menu a {
+	margin: 						0;
+	color: 							#007ea2;
+	font-size:					12px;
+	text-decoration:		none;
+	font-weight: 				bold;
+	display: 						block;
+	width: 							131px;
+	height: 						24px;
+	border-left: 				1px solid #007ea2;
+}
+#prim_links .block-menu li a.active {
+	background-color:		#007ea2;
+	color: 							#FFFFFF; 
+}
+#prim_links .block-menu a:hover { 
+	background-color:		#007ea2;
+	color: 							#FFFFFF; 
+	text-decoration:		none;
+}
+
+#block-user-1 {
+	margin-left: 				6px;
+}

@@ -1,0 +1,59 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using ProjectTableAdapters;
+
+/// <summary>
+/// Summary description for GGPointsBLL
+/// </summary>
+public class GGPointsBLL
+{
+    private GGPointsTableAdapter _adapter = null;
+    public GGPointsTableAdapter Adapter
+    {
+        get
+        {
+            if(_adapter==null)
+            {
+                _adapter=new GGPointsTableAdapter();
+            }
+            return _adapter;
+        }
+        set
+        {
+            _adapter = value;
+        }
+    }
+	public GGPointsBLL()
+	{
+		//
+		// TODO: Add constructor logic here
+		//
+
+	}
+
+    public  Project.GGPointsDataTable  GetData()
+    {
+        Project.GGPointsDataTable datatable = Adapter.GetData();
+        return datatable;
+    }
+
+    public int InsertData (double _lat, double _lon, string icon)
+    {
+        int rowAffected = -1;
+
+        rowAffected = Adapter.InsertQuery(_lat, _lon, icon);
+        return rowAffected;
+    }
+
+    public Project.GGPointsDataTable GetDataByID(int _id)
+    {
+        return Adapter.GetDataByID(_id);
+    }
+}

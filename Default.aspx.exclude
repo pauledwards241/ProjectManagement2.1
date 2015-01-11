@@ -1,0 +1,330 @@
+<%@ Page Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
+    CodeFile="Default.aspx.cs" Inherits="ProjectManagement_Default" Title="Untitled Page" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
+<%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+    Namespace="System.Web.UI" TagPrefix="ajax" %>
+    
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHoder1" runat="Server"> <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA"   type="text/javascript"></script>
+
+             <div id= "newProject" style="background:white; display:none;"  >
+    
+        <div id ="inner" style="width:300px; border:solid 1px black">
+			<asp:HiddenField ID="_TxtLat" runat="server" />
+			<asp:HiddenField Id="_TxtLng" runat="server" /> 
+        <table>
+            <tr>
+                <td><span class="Formlabel">Project Code</span></td>
+                <td><asp:TextBox ID="TxtProjectCode" runat="server"></asp:TextBox></td>
+            </tr>
+            <tr>
+                <td>Project Status:</td>
+                <td>
+                   	<asp:DropDownList ID="Dropdown_Status" runat="server" DataSourceID="SqlDataSource3"
+											DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect">
+										</asp:DropDownList><asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
+											SelectCommand="SELECT [Status_ID], [Status] FROM [status]"></asp:SqlDataSource>
+                </td>
+            </tr>
+            <tr>
+                <td>Department:</td>
+                <td>
+                   <asp:DropDownList ID="DropDownList_department" runat="server" DataSourceID="SqlDataSource4"
+											CssClass="MySelect" DataTextField="Name" DataValueField="Dep_ID">
+										</asp:DropDownList><asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
+											SelectCommand="SELECT [Dep_ID], [Name] FROM [Department]"></asp:SqlDataSource>
+                </td>
+            </tr>
+            <tr>
+                <td align="center"><input type="button" id="savePro" title="save" value="Save" onclick="saveProject()" class="buttonSubmit" /></td>
+                <td align="center"><input type="button" id="Cancel" value="Cancel" onclick="cancelSaving()" class="buttonSubmit" /></td>
+            </tr>
+        </table>
+           
+        </div>
+    </div>
+  
+
+    <input  type="text" id="_Txt_address" class="textinput" /><input id="Button1" class="buttonSubmit" type="button" value="button" onclick="FindAddress()" />&nbsp;
+   
+      <script type="text/javascript">
+    function initialize() {
+      if (GBrowserIsCompatible()) {
+        map = new GMap2(document.getElementById("map_canvas"));
+        map.addControl(new GLargeMapControl());
+        map.addControl(new GMapTypeControl());
+    
+        map.addControl(new GOverviewMapControl());
+        map.addControl(new GScaleControl());
+        map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+        createContextMenu(map);
+        //adddatamarker();
+        
+      }
+    }
+    
+    function adddatamarker(){
+ 
+	datamarker = new GMarker(new GLatLng(37.4419,-122.1419));
+	// map = new GMap2(document.getElementById("map_canvas"));
+	map.addOverlay(datamarker);
+	
+ }
+	
+
+    
+     function createContextMenu(map)
+   {
+      contextmenu = document.createElement("div");
+      contextmenu.style.visibility="hidden";
+      contextmenu.style.background="#ffffff";
+      contextmenu.style.border="1px solid #8888FF";
+
+contextmenu.innerHTML = '<a href="javascript:zoomIn()">  <div class="context">  Zoom in  </div></a>'+ '<a href="javascript:zoomOut()"><div class="context">  Zoom out  </div></a>'+ '<a href="javascript:zoomInHere()">  <div class="context">  Zoom in here  </div></a>'+ '<a href="javascript:zoomOutHere()">  <div class="context">  Zoom out here  </div></a>'+ '<a href="javascript:centreMapHere()">  <div class="context">  Centre map here  </div></a>' + '<a href="javascript:CreateMarker()"><div class="context"> Create Marker</div></a>';
+    
+      map.getContainer().appendChild(contextmenu);
+      GEvent.addListener(map,"singlerightclick",function(pixel,tile) 
+      {
+          clickedPixel = pixel;
+          var x=pixel.x;
+          var y=pixel.y;
+          if (x > map.getSize().width - 120) 
+          { 
+            x = map.getSize().width - 120 
+          }
+          if (y > map.getSize().height - 100) 
+          { 
+            y = map.getSize().height - 100 
+          }
+          var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(x,y));  
+          pos.apply(contextmenu);
+          contextmenu.style.visibility = "visible";
+     });
+     GEvent.addListener(map, "click", function() 
+     {
+          contextmenu.style.visibility="hidden";
+     });
+ }
+ function zoomIn() 
+ {
+            map.zoomIn();
+            contextmenu.style.visibility="hidden";
+ }      
+ function zoomOut() 
+ {
+           map.zoomOut();
+           contextmenu.style.visibility="hidden";
+ }      
+ function zoomInHere() 
+ {
+           var point = map.fromContainerPixelToLatLng(clickedPixel)
+           map.zoomIn(point,true);
+           contextmenu.style.visibility="hidden";
+ }      
+ function zoomOutHere() 
+ {
+          var point = map.fromContainerPixelToLatLng(clickedPixel)
+          map.setCenter(point,map.getZoom()-1); 
+          contextmenu.style.visibility="hidden";
+ }      
+ function centreMapHere() 
+ {
+         var point = map.fromContainerPixelToLatLng(clickedPixel)
+         map.setCenter(point);
+         contextmenu.style.visibility="hidden";
+ }
+
+ function CreateMarker()
+ {
+ var newprojectwindow = document.getElementById("newProject");
+   // var newProjectwindowHTMl = newprojectwindow.innerHTML();
+    map.getContainer().appendChild(newprojectwindow);
+    point =  map.fromContainerPixelToLatLng(clickedPixel);
+
+    window.newmarker = new GMarker(point,{draggable: true});
+			  
+			GEvent.addListener(window.newmarker,"dragstart", function(){
+				newprojectwindow.style.display="none";
+			});
+			
+			GEvent.addListener(window.newmarker,"dragend", function(){
+			      markpoistion = map.fromLatLngToContainerPixel(window.newmarker.getLatLng());     
+                  var x=markpoistion.x;
+                  var y=markpoistion.y;
+                  if (x > map.getSize().width - 120) 
+                  { 
+                    x = map.getSize().width - 120 
+                  }
+                  if (y > map.getSize().height - 100) 
+                  { 
+                    y = map.getSize().height - 100 
+                  }
+                  var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(x,y));  
+                  pos.apply(newprojectwindow);
+                  markcordinates = window.newmarker.getLatLng();
+                  SaveLatLng(markcordinates.lat(),markcordinates.lng());
+                  
+                  newprojectwindow.style.display = "block";
+             });
+			markpoistion = map.fromLatLngToContainerPixel(window.newmarker.getLatLng());     
+                  var x=markpoistion.x;
+                  var y=markpoistion.y;
+                  if (x > map.getSize().width - 120) 
+                  { 
+                    x = map.getSize().width - 120 
+                  }
+                  if (y > map.getSize().height - 100) 
+                  { 
+                    y = map.getSize().height - 100 
+                  }
+                  markcordinates = window.newmarker.getLatLng();
+                  SaveLatLng(markcordinates.lat(),markcordinates.lng());
+                  var pos = new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(x,y));  
+                  pos.apply(newprojectwindow);
+                  newprojectwindow.style.display = "block";
+                    
+			map.addOverlay(window.newmarker);
+			contextmenu.style.visibility="hidden";
+ 
+ }
+  function saveProject(){
+ newprojectwindow = document.getElementById("newProject");
+    icon= new GIcon();
+   // image="<%=this.GetIconPath() %>";
+    var blueIcon = new GIcon(G_DEFAULT_ICON);
+        _image = "GGIcon/live/designing 1.png";
+		
+		// Set up our GMarkerOptions object
+		markerOptions = { icon:blueIcon };
+    //window.newmarker.setImage(_image);
+    //tempmarker = new GMarker(window.newmarker.getLatLng(),markerOptions)
+    //map.addOverlay(tempmarker);
+ //alert(window.newmarker.getLatLng());
+    newprojectwindow.style.display="none";
+    __doPostBack('<%= this.BTNaddnew.UniqueID %>','')
+
+ }
+ 
+ function cancelSaving(){
+    newprojectwindow = document.getElementById("newProject");
+    newprojectwindow.style.display="none";
+    map.removeOverlay(window.newmarker);
+ }
+ 
+ function SaveLatLng(lat,lng){
+	
+    txt_lat = document.getElementById("<%=this._TxtLat.ClientID %>");
+    txt_lat.value = lat;
+    txt_lng = document.getElementById("<%= this._TxtLng.ClientID %>");
+    txt_lng.value = lng;
+ }
+
+ 
+
+    </script>
+    <script type="text/javascript">
+        function FindAddress(){
+           var address = document.getElementById("_Txt_address").value;
+           if(address==undefined){
+            return;
+           }
+           else{           
+               var geocoder = new GClientGeocoder();
+               var zoom ;
+               if (address.indexOf(",")!=-1){
+                    zoom = 20 ;
+                }
+                else{
+                    zoom=13;
+                }
+            
+               if(geocoder){
+                    geocoder.getLatLng(address,function (point){
+                                                                if(!point){
+                                                                 alert(address + "not found");                        
+                                                                }   
+                                                                else{
+                                                                    map.setCenter(point,zoom);
+                                                                    var marker = new GMarker(point,{draggable: true});
+                                 
+                                                                    map.addOverlay(marker);
+                                                                    marker.openInfoWindowHtml(address);
+                            GEvent.addListener(marker,"dragstart", function(){
+				map.closeInfoWindow();
+			});
+			
+			GEvent.addListener(marker,"dragend", function(){
+			    var new_div = document.getElementById("newProject");
+			    marker.openInfoWindow(document.getElementById("newProject"));
+			});
+                                                                }
+                });
+            }
+           } 
+                   
+        }
+        
+
+
+
+    </script>
+  <div id="map_canvas" style="width: 600px; height: 600px; float:left;"></div>
+  <div id="data_canvas" style="width:350px; margin-left:10px; background:white; float:right;">
+      <ajax:ScriptManager ID="ScriptManager1" runat="server">
+      
+      </ajax:ScriptManager>
+      <ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+      <ContentTemplate>
+<asp:GridView id="GridView1" runat="server" CssClass="igoogle igoogle-classic" OnRowCommand="GridView1_RowCommand" OnPageIndexChanging="GridView1_PageIndexChanging" DataKeyNames="Project_ID" AutoGenerateColumns="False" AllowPaging="True" OnRowDataBound="GridView1_RowDataBound" Width="340px">
+					<RowStyle CssClass="data-row" />
+					<AlternatingRowStyle CssClass="alt-data-row" />
+					<HeaderStyle CssClass="header-row" />
+					<Columns>
+					<asp:BoundField DataField="Project code" HeaderText="Project code" />
+					<asp:BoundField DataField="Status" HeaderText="Status" />
+						<asp:BoundField DataField="Name" HeaderText="Department" />
+						<asp:TemplateField HeaderText="Detailed Entry">
+						<ItemTemplate>
+							<asp:LinkButton id="LTNDetail" runat="server" ></asp:LinkButton>
+								
+						</ItemTemplate>
+						</asp:TemplateField>
+						<asp:TemplateField HeaderText="Detailed" Visible="false">
+							
+							<ItemTemplate>
+								<asp:Label ID="Txt_lat" runat="server" Text='<%# Eval("lat") %>' Visible="false"></asp:Label>
+								<asp:Label Visible="true" ID="Txt_lon" runat="server" Text='<%# Eval("lon") %>'>
+								</asp:Label>
+								<asp:Label Visible="true" ID="Txt_ID" runat="server" Text='<%# Eval("Project_ID") %>'></asp:Label>
+								
+							</ItemTemplate>
+						</asp:TemplateField>
+						<asp:ButtonField CommandName="go" Text="Map" />
+						<asp:ButtonField CommandName="List" Text="List" />
+					</Columns>
+					<PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
+				</asp:GridView> <asp:Button id="BTNaddnew" runat="server" Text="Button" OnClick="BTNaddnew_Click" UseSubmitBehavior="False"></asp:Button> 
+				
+</ContentTemplate>
+      </ajax:UpdatePanel>
+<ajax:UpdateProgress runat="server" id="PageUpdateProgress" AssociatedUpdatePanelID="UpdatePanel1" >
+            <ProgressTemplate>
+               <asp:Panel ID="pnlPopup" runat="server" CssClass="progress" >
+    <div class="container">
+        <div class="header">Loading, please wait...</div>
+        <div class="body">
+			<img src="_Asset/images/activity.gif" />
+        </div>
+    </div>
+</asp:Panel> 
+            </ProgressTemplate>
+            
+        </ajax:UpdateProgress>
+	 
+  </div>
+
+
+<script type="text/javascript"></script>
+
+</asp:Content>
