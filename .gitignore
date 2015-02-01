@@ -163,3 +163,4 @@ $RECYCLE.BIN/
 # Extra
 # =========================
 /node_modules/
+App_Data/Emails.xml

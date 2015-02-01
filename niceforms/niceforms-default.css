@@ -5,7 +5,7 @@ URL: http://www.badboy.ro/
 ##########################################*/
 
 /*Forms defaults*/
-input, textarea {
+input, textarea, button {
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:12px;
 	color:#404040;

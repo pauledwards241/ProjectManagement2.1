@@ -5,7 +5,13 @@
 <%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="ajax" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
+<asp:Content ID="ContentHeader" ContentPlaceHolderID="ContentPlaceHolderHeader" runat="Server">
+    <link rel="Stylesheet" type="text/css" href="_Asset/bootstrap.css" />
+</asp:Content>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHodler1" runat="Server">
+
     <div runat="server" id="ViewPanel">
         <fieldset title="Project Detail">
             <legend style="font-size: medium; font-weight: bold">Project Detail</legend>
@@ -19,6 +25,9 @@
                                 Project Detail
                             </HeaderTemplate>
                             <ContentTemplate>
+
+                                <asp:Label ID="lblEmailSuccess" runat="server" CssClass="success" Text="* Email sent successfully" Visible="false"></asp:Label>
+
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
                                     DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
                                     Width="429px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
@@ -108,8 +117,7 @@
                                             <EditItemTemplate>
                                                 <asp:Label ID="lblSector" runat="server" Text='<%# Eval("SectorList") %>' Visible="false"></asp:Label>
                                                 <asp:ListBox ID="DDLSector" SelectionMode="Multiple" runat="server" DataSourceID="SqlDataSource5"
-                                                    CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID">
-                                                </asp:ListBox>
+                                                    CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
                                             </EditItemTemplate>
@@ -188,9 +196,10 @@
                                             UpdateText="Update" />
                                     </Fields>
                                     <FooterTemplate>
-                                        <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" /><asp:Button
-                                            CommandName="JobSheet" Text="Job Sheet" runat="server" ID="BtnSheet" OnClick="BtnSheet_Click" />
+                                        <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" />
+                                        <asp:Button CommandName="JobSheet" Text="Job Sheet" runat="server" ID="BtnSheet" OnClick="BtnSheet_Click" />
                                         <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Design Job Sheet" />
+                                        <button type="button" data-toggle="modal" data-target="#upload-job-sheet">Email Job Sheet</button>
                                     </FooterTemplate>
                                 </asp:DetailsView>
                                 &nbsp;
@@ -201,37 +210,30 @@
                             <ContentTemplate>
                                 <table id="Table1" class="jobsheet" runat="server">
                                     <tr>
-                                        <td colspan="4" class="heading1">
-                                            New Project Details
+                                        <td colspan="4" class="heading1">New Project Details
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" class="heading2">
-                                            Job Detail
+                                        <td colspan="4" class="heading2">Job Detail
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="height: 26px">
-                                            Job Code
+                                        <td style="height: 26px">Job Code
                                         </td>
                                         <td style="height: 26px">
                                             <asp:TextBox ID="TxtJobCode" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="height: 26px">
-                                            Job No
+                                        <td style="height: 26px">Job No
                                         </td>
                                         <td style="width: 25%; height: 26px">
                                             <asp:TextBox ID="TxtJobNo" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Job Details
+                                        <td>Job Details
                                         </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            For
+                                        <td></td>
+                                        <td>For
                                         </td>
                                         <td style="width: 25%">
                                             <asp:TextBox ID="Txtfor" runat="server"></asp:TextBox>
@@ -243,57 +245,46 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="heading2">
-                                            Client Details
+                                        <td class="heading2">Client Details
                                         </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            Ref
+                                        <td></td>
+                                        <td>Ref
                                         </td>
                                         <td style="width: 25%">
                                             <asp:TextBox ID="TxtRef" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Client
+                                        <td>Client
                                         </td>
                                         <td>
                                             <asp:TextBox ID="TxtClient" runat="server"></asp:TextBox>
                                         </td>
-                                        <td>
-                                            Order No
+                                        <td>Order No
                                         </td>
                                         <td style="width: 25%">
                                             <asp:TextBox ID="TxtOrderNo" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="height: 26px">
-                                            Contact
+                                        <td style="height: 26px">Contact
                                         </td>
                                         <td style="height: 26px">
                                             <asp:TextBox ID="TxtContact" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="height: 26px">
-                                            Invoice Contact
+                                        <td style="height: 26px">Invoice Contact
                                         </td>
                                         <td style="width: 25%; height: 26px;">
                                             <asp:TextBox ID="TxtInvoiceContact" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Address:
+                                        <td>Address:
                                         </td>
-                                        <td>
+                                        <td></td>
+                                        <td>Invoice Address
                                         </td>
-                                        <td>
-                                            Invoice Address
-                                        </td>
-                                        <td style="width: 25%">
-                                        </td>
+                                        <td style="width: 25%"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">
@@ -305,57 +296,46 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Tel
+                                        <td>Tel
                                         </td>
                                         <td>
                                             <asp:TextBox ID="TxtTel" runat="server"></asp:TextBox>
                                         </td>
-                                        <td>
-                                            Tel
+                                        <td>Tel
                                         </td>
                                         <td style="width: 25%">
                                             <asp:TextBox ID="TxtInvoiceTel" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Fax
+                                        <td>Fax
                                         </td>
                                         <td>
                                             <asp:TextBox ID="TxtFax" runat="server"></asp:TextBox>
                                         </td>
-                                        <td>
-                                            Fax
+                                        <td>Fax
                                         </td>
                                         <td style="width: 25%">
                                             <asp:TextBox ID="TxtInvoiceFax" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td style="width: 25%">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="width: 25%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="heading2">Contract / Order Details
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" class="heading2">
-                                            Contract / Order Details
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="height: 51px">
-                                            Estimated Hours
+                                        <td style="height: 51px">Estimated Hours
                                         </td>
                                         <td style="height: 51px">
                                             <asp:TextBox ID="TxtHours" runat="server"></asp:TextBox>
                                         </td>
-                                        <td style="height: 51px">
-                                            Estimated Completion Date/<br />
+                                        <td style="height: 51px">Estimated Completion Date/<br />
                                             Finanl Invoice Date
                                         </td>
                                         <td style="width: 25%; height: 51px">
@@ -363,39 +343,28 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td style="width: 25%">
-                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="width: 25%"></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Estimated Fee/
+                                        <td>Estimated Fee/
                                             <br />
                                             Order Value
                                         </td>
                                         <td>
                                             <asp:TextBox ID="TxtOrderValue" runat="server"></asp:TextBox>
                                         </td>
-                                        <td>
-                                        </td>
-                                        <td style="width: 25%">
-                                        </td>
+                                        <td></td>
+                                        <td style="width: 25%"></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Variation Orders
+                                        <td>Variation Orders
                                         </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td style="width: 25%">
-                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="width: 25%"></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4">
@@ -403,36 +372,27 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Project Manager
+                                        <td>Project Manager
                                         </td>
                                         <td>
                                             <asp:TextBox ID="TxtManager" runat="server"></asp:TextBox>
                                         </td>
-                                        <td>
-                                        </td>
-                                        <td style="width: 25%">
-                                        </td>
+                                        <td></td>
+                                        <td style="width: 25%"></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Director
+                                        <td>Director
                                         </td>
                                         <td>
                                             <asp:TextBox ID="TxtDirector" runat="server"></asp:TextBox>
                                         </td>
-                                        <td>
-                                        </td>
-                                        <td style="width: 25%">
-                                        </td>
+                                        <td></td>
+                                        <td style="width: 25%"></td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                            Date
+                                        <td></td>
+                                        <td></td>
+                                        <td>Date
                                         </td>
                                         <td style="width: 25%">
                                             <asp:TextBox ID="TxtDate" runat="server"></asp:TextBox>
@@ -456,4 +416,73 @@
     </div>
     <div id="editpanel" runat="server">
     </div>
+
+    <div class="modal fade" id="upload-job-sheet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Email Job Sheet</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group first">
+                        <label for="FileJobSheet">
+                            Job Sheet
+                            <span class="validation-label">* Required</span>
+                        </label>
+                        <asp:FileUpload ID="FileJobSheet" runat="server" />
+                    </div>     
+                    <div class="form-group">
+                        <label for="FIleOriginalFeeProposal">
+                            Original Fee Proposal 
+                            <span class="validation-label">* Required</span>
+                        </label>
+                        <asp:FileUpload ID="FileOriginalFeeProposal" runat="server" />
+                    </div>    
+                    <div class="form-group last">
+                        <label for="FIleAcceptanceOfService">
+                            Client Acceptance of Service
+                            <span class="validation-label">* Required</span>
+                        </label>
+                        <asp:FileUpload ID="FileAcceptanceOfService" runat="server" />
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <asp:Button ID="UploadJobSheet" CssClass="btn btn-primary" runat="server" OnClick="UploadJobSheet_Click" OnClientClick="return validateUpload()" Text="Email Job Sheet" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</asp:Content>
+
+<asp:Content ID="ContentScripts" ContentPlaceHolderID="ContentPlaceHolderScripts" runat="server">
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        $('#upload-job-sheet').on('show.bs.modal', function (e) {
+            $('.validation-label').hide();
+        })
+
+        function validateUpload() {
+
+            var validateFileInput = function (id) {
+                var element = $('input[id$="' + id + '"]');
+                var validationLabel = element.parent().find('.validation-label');
+
+                if (element.val() === '')
+                    validationLabel.fadeIn();
+                else
+                    validationLabel.hide();
+            }
+
+            validateFileInput('FileJobSheet');
+
+            return ($('.validation-label:visible').length === 0);
+        }
+
+        //$('#upload-job-sheet').modal('show');
+
+    </script>
 </asp:Content>

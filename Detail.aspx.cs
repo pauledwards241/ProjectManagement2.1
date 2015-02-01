@@ -15,6 +15,7 @@ using CheckBox = System.Web.UI.WebControls.CheckBox;
 using Label = System.Web.UI.WebControls.Label;
 using TextBox = System.Web.UI.WebControls.TextBox;
 using GemBox.Spreadsheet;
+using System.Net.Mail;
 
 public partial class Detail : System.Web.UI.Page
 {
@@ -23,7 +24,6 @@ public partial class Detail : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
         ScriptManager1.RegisterPostBackControl(Button1);
 
         if (!IsPostBack)
@@ -43,6 +43,7 @@ public partial class Detail : System.Web.UI.Page
             DetailsView2Databinding();
         }
 
+        lblEmailSuccess.Visible = false;
     }
 
     private void DetailsView2Databinding()
@@ -469,6 +470,26 @@ public partial class Detail : System.Web.UI.Page
         }
     }
 
+    protected void UploadJobSheet_Click(object sender, EventArgs e)
+    {
+        if (FileJobSheet.PostedFile.ContentLength == 0)
+            return;
+
+        System.Collections.Generic.List<Attachment> attachments = new System.Collections.Generic.List<Attachment>();
+
+        attachments.Add(new Attachment(FileJobSheet.PostedFile.InputStream, FileJobSheet.PostedFile.FileName));
+
+        if (FileOriginalFeeProposal.PostedFile.ContentLength > 0)
+            attachments.Add(new Attachment(FileOriginalFeeProposal.PostedFile.InputStream, FileOriginalFeeProposal.PostedFile.FileName));
+
+        if (FileAcceptanceOfService.PostedFile.ContentLength > 0)
+            attachments.Add(new Attachment(FileAcceptanceOfService.PostedFile.InputStream, FileAcceptanceOfService.PostedFile.FileName));
+
+        EmailService.SendEmail("jobSheet", attachments);
+
+        lblEmailSuccess.Visible = true;
+    }
+
     public override void VerifyRenderingInServerForm(Control control)
     {
         return;
@@ -680,5 +701,4 @@ public partial class Detail : System.Web.UI.Page
 
         AllProcesses = null;
     }
-
 }

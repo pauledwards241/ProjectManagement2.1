@@ -103,4 +103,64 @@ table.edit .readonly {
     color: #fff;
 }
 
+/* Modal */
+
+.modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+}
+
+.modal-dialog label,
+.modal-title {
+    color: #333;
+}
+
+input[type=file] {
+    box-sizing: border-box;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.form-group {
+    border-bottom: dashed 2px #ccc;
+    margin-bottom: 0;
+    padding: 15px 0 10px 0;
+}
+
+    .form-group.first {
+        padding-top: 0;
+    }
+
+    .form-group.last {
+        border-bottom-style: none;
+        padding-bottom: 0;
+    }
+
+.modal-dialog label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.validation-label {
+    color: #f00;
+    display: none;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+/* Labels */
+
+.success {
+    display: block;
+    margin: 1em 0;
+    font-weight: bold;
+    color: green;
+}
+
+
 

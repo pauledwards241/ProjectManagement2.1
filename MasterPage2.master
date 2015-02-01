@@ -5,13 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Untitled Page</title>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolderHeader" runat="server"></asp:ContentPlaceHolder>
     <link href="_Asset/layout1.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/igoogle-classic.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/igoogle-common.css" rel="stylesheet" type="text/css" />
-    <link href="_Asset/GridView.css" rel="stylesheet" type="text/css" />
+    <link href="_Asset/GridView.css?id=1" rel="stylesheet" type="text/css" />
     <link href="_Asset/Progress.css" rel="stylesheet" type="text/css" />
-    <link href="niceforms/niceforms-default.css" rel="stylesheet" type="text/css" />
-    <script src="js/jquery-1.2.3.pack.js" type="text/javascript"></script>
+    <link href="niceforms/niceforms-default.css" rel="stylesheet" type="text/css" />    
+    <script src="js/jquery-1.11.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         var marker;
         var map;
@@ -48,5 +49,6 @@
         </div>
     </div>
     </form>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolderScripts" runat="server"></asp:ContentPlaceHolder>
 </body>
 </html>
