@@ -48,7 +48,8 @@ public class EmailService
             foreach (Attachment attachment in attachments)
                 mailMessage.Attachments.Add(attachment);
 
-            SmtpClient smtp = new SmtpClient(ConfigurationManager.AppSettings["SmtpServer"]);
+            SmtpClient smtp = new SmtpClient();
+
             smtp.Send(mailMessage);
         }
     }
