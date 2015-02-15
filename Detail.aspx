@@ -30,7 +30,7 @@
 
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
                                     DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
-                                    Width="500px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
+                                    Width="510px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
                                     OnModeChanging="DetailsView2_ModeChanging" OnItemUpdated="DetailsView2_ItemUpdated"
                                     OnItemUpdating="DetailsView2_ItemUpdating" OnItemCommand="DetailsView2_ItemCommand">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
