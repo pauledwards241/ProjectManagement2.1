@@ -30,7 +30,7 @@
 
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
                                     DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
-                                    Width="429px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
+                                    Width="500px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
                                     OnModeChanging="DetailsView2_ModeChanging" OnItemUpdated="DetailsView2_ItemUpdated"
                                     OnItemUpdating="DetailsView2_ItemUpdating" OnItemCommand="DetailsView2_ItemCommand">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
@@ -199,7 +199,7 @@
                                         <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" />
                                         <asp:Button CommandName="JobSheet" Text="Job Sheet" runat="server" ID="BtnSheet" OnClick="BtnSheet_Click" />
                                         <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Design Job Sheet" />
-                                        <button type="button" data-toggle="modal" data-target="#upload-job-sheet">Email Job Sheet</button>
+                                        <button type="button" data-toggle="modal" data-target="#upload-job-sheet">Submit Job Sheet/Fee/Acceptance</button>
                                     </FooterTemplate>
                                 </asp:DetailsView>
                                 &nbsp;
@@ -422,7 +422,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Email Job Sheet</h4>
+                    <h4 class="modal-title" id="myModalLabel">Submit Project Details</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group first">
@@ -435,21 +435,25 @@
                     <div class="form-group">
                         <label for="FIleOriginalFeeProposal">
                             Original Fee Proposal 
-                            <span class="validation-label">* Required</span>
                         </label>
                         <asp:FileUpload ID="FileOriginalFeeProposal" runat="server" />
                     </div>    
-                    <div class="form-group last">
+                    <div class="form-group">
                         <label for="FIleAcceptanceOfService">
                             Client Acceptance of Service
-                            <span class="validation-label">* Required</span>
                         </label>
                         <asp:FileUpload ID="FileAcceptanceOfService" runat="server" />
                     </div>   
+                    <div class="form-group last">
+                        <label for="ProjectDetailsComments">
+                            Additional Comments
+                        </label>
+                        <asp:TextBox ID="ProjectDetailsComments" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <asp:Button ID="UploadJobSheet" CssClass="btn btn-primary" runat="server" OnClick="UploadJobSheet_Click" OnClientClick="return validateUpload()" Text="Email Job Sheet" />
+                    <asp:Button ID="UploadJobSheet" CssClass="btn btn-primary" runat="server" OnClick="UploadJobSheet_Click" OnClientClick="return validateUpload()" Text="Email Project Details" />
                 </div>
             </div>
         </div>
@@ -463,6 +467,7 @@
 
         $('#upload-job-sheet').on('show.bs.modal', function (e) {
             $('.validation-label').hide();
+            $('.form-control').val('');
         })
 
         function validateUpload() {

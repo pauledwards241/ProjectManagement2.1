@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 public class EmailService
 {
-    public static void SendEmail(String name, List<Attachment> attachments)
+    public static void SendEmail(String name, String comments, List<Attachment> attachments)
     {
         using (Stream stream = File.OpenRead(HttpContext.Current.Server.MapPath(@"~\App_Data\Emails.xml")))
         {
@@ -43,7 +43,10 @@ public class EmailService
             }
 
             mailMessage.Subject = subjectNode.InnerText;
-            mailMessage.Body = bodyNode.InnerText.TrimStart('\r', '\n');
+            mailMessage.Body = bodyNode.InnerText.Trim();
+
+            if (!String.IsNullOrEmpty(comments))
+                mailMessage.Body += Environment.NewLine + Environment.NewLine + comments;
 
             foreach (Attachment attachment in attachments)
                 mailMessage.Attachments.Add(attachment);

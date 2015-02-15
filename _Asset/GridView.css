@@ -141,6 +141,10 @@ input[type=file] {
         padding-bottom: 0;
     }
 
+.form-control {
+    box-sizing: border-box;
+}
+
 .modal-dialog label {
     font-size: 14px;
     font-weight: 700;

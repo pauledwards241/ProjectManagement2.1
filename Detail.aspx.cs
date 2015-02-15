@@ -485,7 +485,7 @@ public partial class Detail : System.Web.UI.Page
         if (FileAcceptanceOfService.PostedFile.ContentLength > 0)
             attachments.Add(new Attachment(FileAcceptanceOfService.PostedFile.InputStream, FileAcceptanceOfService.PostedFile.FileName));
 
-        EmailService.SendEmail("jobSheet", attachments);
+        EmailService.SendEmail("jobSheet", ProjectDetailsComments.Text, attachments);
 
         lblEmailSuccess.Visible = true;
     }
