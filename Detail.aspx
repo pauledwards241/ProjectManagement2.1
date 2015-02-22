@@ -474,7 +474,7 @@
 
         $('#upload-job-sheet').on('show.bs.modal', function (e) {
             $('.validation-label').hide();
-            $('.form-group input').val('');
+            $('.form-group input, .form-group textarea').val('');
         })
 
         function validateUpload() {
