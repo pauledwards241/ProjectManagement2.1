@@ -173,7 +173,7 @@ public partial class Detail : System.Web.UI.Page
         DetailsView2Databinding();
 
     }
-    
+
     protected void DetailsView2_ItemCommand(object sender, DetailsViewCommandEventArgs e)
     {
         if (e.CommandName == "GoBack")
@@ -184,7 +184,7 @@ public partial class Detail : System.Web.UI.Page
             Response.Redirect(string.Format("map.aspx?lat={0}&lng={1}&code={2}", lat, lng, projectcode), false);
         }
     }
-    
+
     protected void Button1_Click(object sender, EventArgs e)
     {
         Document doc = new Document();
@@ -472,7 +472,7 @@ public partial class Detail : System.Web.UI.Page
 
     protected void UploadJobSheet_Click(object sender, EventArgs e)
     {
-        if (FileJobSheet.PostedFile.ContentLength == 0)
+        if (FileJobSheet.PostedFile.ContentLength == 0 || SubmittedBy.Text.Trim().Length == 0)
             return;
 
         System.Collections.Generic.List<Attachment> attachments = new System.Collections.Generic.List<Attachment>();
@@ -485,7 +485,9 @@ public partial class Detail : System.Web.UI.Page
         if (FileAcceptanceOfService.PostedFile.ContentLength > 0)
             attachments.Add(new Attachment(FileAcceptanceOfService.PostedFile.InputStream, FileAcceptanceOfService.PostedFile.FileName));
 
-        EmailService.SendEmail("jobSheet", ProjectDetailsComments.Text, attachments);
+        String[] bodyParameters = { SubmittedBy.Text, ProjectDetailsComments.Text };
+
+        EmailService.SendEmail("jobSheet", bodyParameters, attachments);
 
         lblEmailSuccess.Visible = true;
     }

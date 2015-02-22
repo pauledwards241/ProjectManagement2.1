@@ -427,8 +427,8 @@
                 <div class="modal-body">
                     <div class="form-group first">
                         <label for="FileJobSheet">
-                            Job Sheet
-                            <span class="validation-label">* Required</span>
+                            * Job Sheet
+                            <span class="validation-label">* Required field</span>
                         </label>
                         <asp:FileUpload ID="FileJobSheet" runat="server" />
                     </div>     
@@ -444,11 +444,18 @@
                         </label>
                         <asp:FileUpload ID="FileAcceptanceOfService" runat="server" />
                     </div>   
+                    <div class="form-group">
+                        <label for="SubmittedBy">
+                            * Submitted by
+                            <span class="validation-label">* Required field</span>
+                        </label>
+                        <asp:Textbox  ID="SubmittedBy" runat="server" CssClass="form-control" placeholder="Insert your name..." />
+                    </div>
                     <div class="form-group last">
                         <label for="ProjectDetailsComments">
                             Additional Comments
                         </label>
-                        <asp:TextBox ID="ProjectDetailsComments" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" />
+                        <asp:TextBox ID="ProjectDetailsComments" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Insert any additional comments..." />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -467,22 +474,23 @@
 
         $('#upload-job-sheet').on('show.bs.modal', function (e) {
             $('.validation-label').hide();
-            $('.form-control').val('');
+            $('.form-group input').val('');
         })
 
         function validateUpload() {
 
-            var validateFileInput = function (id) {
+            var validateField = function (id) {
                 var element = $('input[id$="' + id + '"]');
                 var validationLabel = element.parent().find('.validation-label');
 
-                if (element.val() === '')
+                if (element.val().trim() === '')
                     validationLabel.fadeIn();
                 else
                     validationLabel.hide();
             }
 
-            validateFileInput('FileJobSheet');
+            validateField('SubmittedBy');
+            validateField('FileJobSheet');
 
             return ($('.validation-label:visible').length === 0);
         }
