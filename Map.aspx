@@ -247,7 +247,7 @@
                             var DDLDept = document.getElementById("<%= this.DropDownList_department.ClientID %>");
                             var dep = new String(DDLDept.options[DDLDept.selectedIndex].text);
                             status = status.trim();
-                            dep = dep.trim();
+                            dep = dep.trim().replace('/', '-');
 
                             var myMarker = "GGIcon/" + status + "/" + dep + ".png";
 
