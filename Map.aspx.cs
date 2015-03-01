@@ -89,7 +89,7 @@ public partial class Map : System.Web.UI.Page
             script.AppendLine("var markers = [];");
             foreach (Project.ProjectRow row in projectTable)
             {
-                string iconPath = "GGIcon" + "/" + row.Status.Trim() + "/" + row.Name.Trim() + ".png";
+                string iconPath = "GGIcon" + "/" + row.Status.Trim() + "/" + row.Name.Trim().Replace('/', '-') + ".png";
                 if (row.IsProject_CodeNull())
                 {
                     row.Project_Code = string.Empty;
