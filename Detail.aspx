@@ -17,8 +17,8 @@
             <legend style="font-size: medium; font-weight: bold">Project Detail</legend>
             <ajax:ScriptManager ID="ScriptManager1" runat="server">
             </ajax:ScriptManager>
-            <ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                <ContentTemplate>
+            <!--<ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>-->
                     <cc1:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0">
                         <cc1:TabPanel runat="server" HeaderText="TabPanel1" ID="TabPanel1">
                             <HeaderTemplate>
@@ -409,8 +409,8 @@
                             </ContentTemplate>
                         </cc1:TabPanel>
                     </cc1:TabContainer>
-                </ContentTemplate>
-            </ajax:UpdatePanel>
+                <!--</ContentTemplate>
+            </ajax:UpdatePanel>-->
             <br />
         </fieldset>
     </div>
