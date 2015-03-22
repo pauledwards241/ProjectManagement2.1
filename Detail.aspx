@@ -187,6 +187,9 @@
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField HeaderText="Created on" DataField="AddedAt" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
+                                        <asp:BoundField HeaderText="Job Sheet" DataField="JobSheetSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
+                                        <asp:BoundField HeaderText="Original Fee Proposal" DataField="FeeProposalSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
+                                        <asp:BoundField HeaderText="Acceptance of Service" DataField="AcceptanceOfServiceSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
                                     </Fields>
                                     <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <EditRowStyle BackColor="#2461BF" />

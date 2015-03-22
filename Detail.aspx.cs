@@ -14,6 +14,7 @@ using System.Reflection;
 using CheckBox = System.Web.UI.WebControls.CheckBox;
 using Label = System.Web.UI.WebControls.Label;
 using TextBox = System.Web.UI.WebControls.TextBox;
+using System.Collections.Generic;
 using GemBox.Spreadsheet;
 using System.Net.Mail;
 
@@ -58,11 +59,17 @@ public partial class Detail : System.Web.UI.Page
 
             GenerateJobSheet(p);
 
+            Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
+            FieldColumns.Add( "AddedAt", 17 );
+            FieldColumns.Add( "JobSheetSubmitted", 18 );
+            FieldColumns.Add( "FeeProposalSubmitted", 19 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 20 );
+
+            foreach (KeyValuePair<String, Int16> item in FieldColumns)
+                DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
+
             DetailsView2.DataBind();
             DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
-
-            if (p.Rows[0]["AddedAt"] == DBNull.Value)
-                DetailsView2.Fields[17].Visible = false;
         }
     }
 
@@ -475,19 +482,29 @@ public partial class Detail : System.Web.UI.Page
         if (FileJobSheet.PostedFile.ContentLength == 0 || SubmittedBy.Text.Trim().Length == 0)
             return;
 
+        Boolean originalFeeProposalIncluded = FileOriginalFeeProposal.PostedFile.ContentLength > 0;
+        Boolean acceptanceOfServiceIncluded = FileAcceptanceOfService.PostedFile.ContentLength > 0;
+
         System.Collections.Generic.List<Attachment> attachments = new System.Collections.Generic.List<Attachment>();
 
         attachments.Add(new Attachment(FileJobSheet.PostedFile.InputStream, FileJobSheet.PostedFile.FileName));
 
-        if (FileOriginalFeeProposal.PostedFile.ContentLength > 0)
+        if (originalFeeProposalIncluded)
             attachments.Add(new Attachment(FileOriginalFeeProposal.PostedFile.InputStream, FileOriginalFeeProposal.PostedFile.FileName));
 
-        if (FileAcceptanceOfService.PostedFile.ContentLength > 0)
+        if (acceptanceOfServiceIncluded)
             attachments.Add(new Attachment(FileAcceptanceOfService.PostedFile.InputStream, FileAcceptanceOfService.PostedFile.FileName));
 
         String[] bodyParameters = { SubmittedBy.Text, ProjectDetailsComments.Text };
 
         EmailService.SendEmail("jobSheet", bodyParameters, attachments);
+
+        // Update database with submission dates
+        String projectId = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
+        DateTime? now = DateTime.Now;
+        projectBLL.UpdateProjectSubmissions(Int32.Parse(projectId), now, originalFeeProposalIncluded ? now : null, acceptanceOfServiceIncluded ? now : null);
+
+        DetailsView2Databinding();
 
         lblEmailSuccess.Visible = true;
     }

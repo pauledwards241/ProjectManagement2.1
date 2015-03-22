@@ -194,6 +194,11 @@ public class ProjectBLL
         Adapter.UpdateStatus(_projectID, _status);
     }
 
+    public void UpdateProjectSubmissions(Int32 projectId, DateTime? jobSheetSubmitted, DateTime? feeProposalSubmitted, DateTime? acceptanceOfServiceSubmitted)
+    {
+        Adapter.UpdateProjectSubmissions(jobSheetSubmitted, feeProposalSubmitted, acceptanceOfServiceSubmitted, projectId);
+    }
+
     public Project.ProjectDataTable GetDataByID(string projectID)
     {
         return Adapter.GetProjectByID(Int16.Parse(projectID));
