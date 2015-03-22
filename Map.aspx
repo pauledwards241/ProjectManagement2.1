@@ -170,9 +170,9 @@
 
                                 map.fitBounds(bounds);
 
-                                var listener = google.maps.event.addListener(map, "idle", function () {
-                                    map.setZoom(13);
-                                    google.maps.event.removeListener(listener);
+                                google.maps.event.addListenerOnce(map, "idle", function () {
+                                    if (map.getZoom() > 16)
+                                        map.setZoom(16); // Was 13
                                 });
                             });
                         });
