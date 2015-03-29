@@ -567,8 +567,11 @@ public partial class Detail : System.Web.UI.Page
             if (!row.IsAddressNull())
                 address = row.Address;
 
+            if (!row.IsAddressNull() && !row.IsCityNull() && !String.IsNullOrEmpty(address))
+                address += "\n";
+
             if (!row.IsCityNull())
-                address += Environment.NewLine + row.City;
+                address += row.City;
 
             if (!String.IsNullOrEmpty(address))
             {
@@ -648,7 +651,7 @@ public partial class Detail : System.Web.UI.Page
 
             Int16 rowToUpdate = 24;
 
-            if (!row.IsAddressNull())
+            if (!row.IsAddressNull() && !String.IsNullOrEmpty(row.Address))
             {
                 String[] addressParts = row.Address.Split(',');
 
@@ -660,7 +663,7 @@ public partial class Detail : System.Web.UI.Page
                 }
             }
 
-            if (!row.IsCityNull())
+            if (!row.IsCityNull() && !String.IsNullOrEmpty(row.City))
             {
                 String[] cityParts = row.City.Split(',');
 
