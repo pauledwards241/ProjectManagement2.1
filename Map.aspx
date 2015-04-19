@@ -51,6 +51,7 @@
             </div>
         </div>
         <!-- end: #prim_links -->
+        <asp:Label ID="DeleteConfirmation" runat="server" CssClass="success" Text="* Project successfully deleted" Visible="false"></asp:Label>
         <div id="content">
             <div id="conndiv" style="width: 1000px;">
                 <div id="newProject" style="background: white; position: absolute; left: 400px; top: 200px;

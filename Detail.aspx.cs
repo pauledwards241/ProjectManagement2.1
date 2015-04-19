@@ -195,6 +195,13 @@ public partial class Detail : System.Web.UI.Page
         }
     }
 
+    protected void DeleteProject_Click(object sender, EventArgs e)
+    {
+        String projectId = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
+        projectBLL.DeleteProject(Int32.Parse(projectId));
+        Response.Redirect("map.aspx?delete=1");
+    }
+
     protected void Button1_Click(object sender, EventArgs e)
     {
         Document doc = new Document();

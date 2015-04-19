@@ -21,6 +21,8 @@ public partial class Map : System.Web.UI.Page
 
         if (!IsPostBack)
             BindingData();
+
+        DeleteConfirmation.Visible = IsPostBack ? false : Request.QueryString["delete"] == "1";
     }
 
     public string GetPrevious()

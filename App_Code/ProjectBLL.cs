@@ -190,6 +190,6 @@ public class ProjectBLL
 
     public void DeleteProject(int projectID)
     {
-        Adapter.DeleteQuery(projectID);
+        Adapter.DeleteProject(projectID);
     }
 }

@@ -4,16 +4,16 @@
  * Feel free to copy/use/change/improve
  */
 
-html,body {
+body {
 	margin:0;
 	padding:0;
 	/* needed for container min-height */
 	min-height:100%;
-	  background-image:		url(images/fadebkg.jpg);
-	  background-repeat:	repeat-x repeat;
+	  background: #18709E url(images/fadebkg.jpg) top center repeat-x;
 	font-family:arial,sans-serif;
 	font-size:small;
 	color:#666;
+    padding-bottom: 15px;
 }
 a:link, a:visited {
   text-decoration: 		none;

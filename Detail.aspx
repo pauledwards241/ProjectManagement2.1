@@ -25,7 +25,6 @@
                                 Project Detail
                             </HeaderTemplate>
                             <ContentTemplate>
-
                                 <asp:Label ID="lblEmailSuccess" runat="server" CssClass="success" Text="* Email sent successfully" Visible="false"></asp:Label>
 
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
@@ -34,7 +33,6 @@
                                     OnModeChanging="DetailsView2_ModeChanging" OnItemUpdated="DetailsView2_ItemUpdated"
                                     OnItemUpdating="DetailsView2_ItemUpdating" OnItemCommand="DetailsView2_ItemCommand">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                    <CommandRowStyle BackColor="#D1DDF1" Font-Bold="True" />
                                     <RowStyle BackColor="#EFF3FB" />
                                     <FieldHeaderStyle BackColor="#DEE8F5" Font-Bold="True" />
                                     <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
@@ -194,9 +192,17 @@
                                     <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <EditRowStyle BackColor="#2461BF" />
                                     <AlternatingRowStyle BackColor="White" />
-                                    <Fields>
-                                        <asp:CommandField ButtonType="Button" ShowEditButton="True" ShowCancelButton="True"
-                                            UpdateText="Update" />
+                                    <Fields>                                        
+                                        <asp:TemplateField ShowHeader="false" ItemStyle-BackColor="#D1DDF1">
+                                            <ItemTemplate>
+                                                <asp:Button ID="EditProject" runat="server" Text="Edit" CommandName="Edit"></asp:Button>
+                                                <button type="button" data-toggle="modal" data-target="#delete-confirmation">Delete</button>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:Button ID="UpdateProject" runat="server" Text="Update" CommandName="Update"></asp:Button>
+                                                <asp:Button ID="CancelEditProject" runat="server" Text="Cancel" CommandName="Cancel"></asp:Button>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                     </Fields>
                                     <FooterTemplate>
                                         <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" />
@@ -418,6 +424,24 @@
         </fieldset>
     </div>
     <div id="editpanel" runat="server">
+    </div>
+
+    <div class="modal fade" id="delete-confirmation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog delete-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this project?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <asp:Button ID="DeleteProject" CssClass="btn btn-primary" runat="server" Text="OK" OnClick="DeleteProject_Click" />
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="upload-job-sheet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
