@@ -164,3 +164,22 @@ div#footer {
 #block-user-1 {
 	margin-left: 				6px;
 }
+
+/* Map page */
+
+.map-grid-results {
+    width: 1000px;
+    background: white;
+    border: solid 1px black;
+    border-top-style: none;
+    padding-top: 8px;
+}
+
+.map-grid-results .tablestyle {
+    margin-top: 8px;
+    border-style: solid none solid none;
+}
+
+.map-grid-results .tablestyle tr td:first-child {
+    border-left-style: none;
+}

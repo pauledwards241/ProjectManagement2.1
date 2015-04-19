@@ -311,20 +311,20 @@
                     </ajax:ScriptManager>
                     Status:
                     <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource3"
-                        DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"
+                        DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="Filter_SelectedIndexChanged"
                         AutoPostBack="true" AppendDataBoundItems="True">
                         <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
                     </asp:DropDownList>
                     Department:
                     <asp:DropDownList ID="DropDownList2" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource4"
-                        DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged">
+                        DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
                     </asp:DropDownList>
                     Sector:
                     <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                         SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector] order by [Name]"></asp:SqlDataSource>
                     <asp:DropDownList ID="DropDownList3" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource5"
-                        DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="DropDownList3_SelectedIndexChanged">
+                        DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
                     </asp:DropDownList>
                     <script type="text/javascript">

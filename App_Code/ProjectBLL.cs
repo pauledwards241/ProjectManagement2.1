@@ -64,26 +64,9 @@ public class ProjectBLL
         return Adapter.GetData();
     }
 
-    public Project.ProjectDataTable GetBasics()
+    public Project.ProjectDataTable GetProjects(Int32? statusId, Int32? departmentId, Int32? sectorId)
     {
-        Project.ProjectDataTable table = Adapter.Getbasics();
-        foreach(Project.ProjectRow row in table)
-        {
-            if(row.IsProject_NameNull())
-            {
-                row.Project_Name = string.Empty;
-            }
-            if(row.IsProject_CodeNull())
-            {
-                row.Project_Code = string.Empty;
-            }
-            if(row.IsCityNull())
-            {
-                row.City = string.Empty;
-            }
-            table.AcceptChanges();
-        }
-        return table;
+        return Adapter.GetProjects(statusId, departmentId, sectorId);
     }
 
     public  int InsertBasics(string _pCode, int _status, int _dep, double _lat, double _lon, string _projectName)
@@ -107,11 +90,6 @@ public class ProjectBLL
     public  Project.ProjectDataTable getDatabyDepartment(int dep_id)
     {
         return Adapter.GetDataByDepartment(dep_id);
-    }
-
-    public Project.ProjectDataTable getDatabySector(int sector_id)
-    {
-        return Adapter.GetDataBySector(sector_id);
     }
 
     public void updateLatLng(int _projectid, double _lat, double _lon){

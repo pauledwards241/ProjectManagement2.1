@@ -20,11 +20,7 @@ public partial class Map : System.Web.UI.Page
         ScriptManager1.RegisterAsyncPostBackControl(BTNaddnew);
 
         if (!IsPostBack)
-        {
-            ViewState["option"] = "Full";
-            ViewState["ID"] = 0;
-            BindingData("Full", 0);
-        }
+            BindingData();
     }
 
     public string GetPrevious()
@@ -48,38 +44,18 @@ public partial class Map : System.Web.UI.Page
         return "GGIcon" + "/" + Dropdown_Status.SelectedItem.Text.Trim() + "/" + DropDownList_department.SelectedItem.Text.Trim() + ".png";
     }
 
-    public void BindingData(string option, int id)
+    public void BindingData()
     {
-        switch (option)
-        {
-            case "Full":
-                {
-                    projectTable = _projectbll.GetBasics();
-                    break;
-                }
+        Int32? statusId = Int32.Parse(DropDownList1.SelectedValue);
+        Int32? departmentId = Int32.Parse(DropDownList2.SelectedValue);
+        Int32? sectorId = Int32.Parse(DropDownList3.SelectedValue);
 
-            case ("Status"):
-                {
-                    projectTable = _projectbll.GetDataByStatus(id);
-                    break;
-                }
-            case ("Department"):
-                {
-                    projectTable = _projectbll.getDatabyDepartment(id);
-                    break;
-                }
-            case ("Sector"):
-                {
-                    projectTable = _projectbll.getDatabySector(id);
-                    break;
-                }
-            default:
-                {
-                    projectTable = _projectbll.GetBasics();
+        statusId = statusId >= 0 ? statusId : null;
+        departmentId = departmentId >= 0 ? departmentId : null;
+        sectorId = sectorId >= 0 ? sectorId : null;
 
-                    break;
-                }
-        }
+        projectTable = _projectbll.GetProjects(statusId, departmentId, sectorId);
+
         total = projectTable.Count;
         GridView1.DataSource = projectTable;
 
@@ -161,7 +137,7 @@ public partial class Map : System.Web.UI.Page
         {
             GridView1.PageIndex = e.NewPageIndex;
         }
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
+        BindingData();
     }
 
     protected void GridView1_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
@@ -189,57 +165,12 @@ public partial class Map : System.Web.UI.Page
                                  lat, lng,
                                  project_name);
         UpdatePanel1.Update();
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
+        BindingData();
     }
 
-    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (DropDownList1.SelectedValue == "-1")
-        {
-            ViewState["option"] = "Full";
-            ViewState["ID"] = -1;
-        }
-        else
-        {
-            ViewState["option"] = "Status";
-            ViewState["ID"] = DropDownList1.SelectedValue;
-        }
-
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
-        UpdatePanel1.Update();
-    }
-
-    protected void DropDownList2_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (DropDownList2.SelectedValue == "-1")
-        {
-            ViewState["option"] = "Full";
-            ViewState["ID"] = -1;
-        }
-        else
-        {
-            ViewState["option"] = "Department";
-            ViewState["ID"] = DropDownList2.SelectedItem.Value;
-        }
-
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
-        UpdatePanel1.Update();
-    }
-
-    protected void DropDownList3_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (DropDownList3.SelectedValue == "-1")
-        {
-            ViewState["option"] = "Full";
-            ViewState["ID"] = -1;
-        }
-        else
-        {
-            ViewState["option"] = "Sector";
-            ViewState["ID"] = DropDownList3.SelectedItem.Value;
-        }
-
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
+        BindingData();
         UpdatePanel1.Update();
     }
 
@@ -278,7 +209,7 @@ public partial class Map : System.Web.UI.Page
     {
         DropDownList DDLPageSize = (DropDownList)sender;
         this.GridView1.PageSize = int.Parse(DDLPageSize.SelectedValue);
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
+        BindingData();
     }
 
     protected void TxtGoToPage_TextChanged(object sender, EventArgs e)
@@ -294,6 +225,6 @@ public partial class Map : System.Web.UI.Page
         {
             GridView1.PageIndex = 0;
         }
-        BindingData(ViewState["option"].ToString(), int.Parse(ViewState["ID"].ToString()));
+        BindingData();
     }
 }

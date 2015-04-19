@@ -112,14 +112,14 @@
                         </table>
                     </div>
                 </div>
-                <div style="width: 1000px; height: 530px; background: white; margin-left: 0px; margin-top: 0px;
+                <div style="width: 1000px; background: white; margin-left: 0px; margin-top: 0px;
                     border: solid 1px black">
                     <input type="text" value="" id="_Txt_address" style="width: 800px; height: 30px;
                         font-size: 15px;" placeholder="Enter a landmark, location or postcode!">&nbsp;
                     <div id="map_canvas" style="width: 1000px; height: 500px;">
                     </div>
                 </div>
-                <div id="data_canvas" style="width: 1000px; background: white; border: solid 1px black;">
+                <div id="data_canvas" class="map-grid-results">
                     <script type="text/javascript">
                         var mapProp = {
                             center: new google.maps.LatLng(51.502865812765563, -0.12788772583007813),
@@ -309,22 +309,22 @@
                     </script>
                     <ajax:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
                     </ajax:ScriptManager>
-                    Status:
+                    &nbsp;Status:
                     <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource3"
-                        DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"
+                        DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="Filter_SelectedIndexChanged"
                         AutoPostBack="true" AppendDataBoundItems="True">
                         <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
                     </asp:DropDownList>
                     Department:
                     <asp:DropDownList ID="DropDownList2" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource4"
-                        DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged">
+                        DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
                     </asp:DropDownList>
                     Sector:
                     <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                         SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector] order by [Name]"></asp:SqlDataSource>
                     <asp:DropDownList ID="DropDownList3" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource5"
-                        DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="DropDownList3_SelectedIndexChanged">
+                        DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
                     </asp:DropDownList>
                     <script type="text/javascript">
