@@ -26,6 +26,18 @@ public partial class Detail : System.Web.UI.Page
 
     const String ExcelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Extended Properties='Excel 8.0;HDR=No;'";
 
+    protected Boolean HasJobSheet
+    {
+        get
+        {
+            return ViewState["HasJobSheet"] != null && (Boolean)ViewState["HasJobSheet"];
+        }
+        set
+        {
+            ViewState["HasJobSheet"] = value;
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager1.RegisterPostBackControl(Button1);
@@ -73,6 +85,9 @@ public partial class Detail : System.Web.UI.Page
 
             DetailsView2.DataBind();
             DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
+
+            HasJobSheet = p.Rows[0]["JobSheetSubmitted"] != DBNull.Value;
+            JobSheetMandatoryMarker.Visible = !HasJobSheet;
         }
     }
 
@@ -489,15 +504,19 @@ public partial class Detail : System.Web.UI.Page
 
     protected void UploadJobSheet_Click(object sender, EventArgs e)
     {
-        if (FileJobSheet.PostedFile.ContentLength == 0 || SubmittedBy.Text.Trim().Length == 0)
-            return;
+        Boolean jobSheetIncluded = FileJobSheet.PostedFile.ContentLength > 0;
+        String submittedBy = SubmittedBy.Text.Trim();
 
+        if ((!HasJobSheet && !jobSheetIncluded) || String.IsNullOrEmpty(submittedBy))
+            return;
+        
         Boolean originalFeeProposalIncluded = FileOriginalFeeProposal.PostedFile.ContentLength > 0;
         Boolean acceptanceOfServiceIncluded = FileAcceptanceOfService.PostedFile.ContentLength > 0;
 
         System.Collections.Generic.List<Attachment> attachments = new System.Collections.Generic.List<Attachment>();
 
-        attachments.Add(new Attachment(FileJobSheet.PostedFile.InputStream, FileJobSheet.PostedFile.FileName));
+        if (jobSheetIncluded)
+            attachments.Add(new Attachment(FileJobSheet.PostedFile.InputStream, FileJobSheet.PostedFile.FileName));
 
         if (originalFeeProposalIncluded)
             attachments.Add(new Attachment(FileOriginalFeeProposal.PostedFile.InputStream, FileOriginalFeeProposal.PostedFile.FileName));
@@ -505,14 +524,19 @@ public partial class Detail : System.Web.UI.Page
         if (acceptanceOfServiceIncluded)
             attachments.Add(new Attachment(FileAcceptanceOfService.PostedFile.InputStream, FileAcceptanceOfService.PostedFile.FileName));
 
-        String[] bodyParameters = { SubmittedBy.Text, ProjectDetailsComments.Text };
+        String comments = ProjectDetailsComments.Text.Trim();
+
+        // Don't send email if no information has been provided
+        if (attachments.Count == 0 && String.IsNullOrEmpty(comments)) return;
+
+        String[] bodyParameters = { submittedBy, comments };
 
         EmailService.SendEmail("jobSheet", bodyParameters, attachments);
 
         // Update database with submission dates
         String projectId = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
         DateTime? now = DateTime.Now;
-        projectBLL.UpdateProjectSubmissions(Int32.Parse(projectId), now, originalFeeProposalIncluded ? now : null, acceptanceOfServiceIncluded ? now : null);
+        projectBLL.UpdateProjectSubmissions(Int32.Parse(projectId), jobSheetIncluded ? now : null, originalFeeProposalIncluded ? now : null, acceptanceOfServiceIncluded ? now : null);
 
         DetailsView2Databinding();
 

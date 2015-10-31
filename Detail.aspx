@@ -453,8 +453,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group first">
-                        <label for="FileJobSheet">
-                            * Job Sheet
+                        <label for="FileJobSheet" data-validate="<%= (!HasJobSheet).ToString().ToLower() %>">
+                            <asp:Label ID="JobSheetMandatoryMarker" runat="server" Text="* "></asp:Label>
+                            Job Sheet
                             <span class="validation-label">* Required field</span>
                         </label>
                         <asp:FileUpload ID="FileJobSheet" runat="server" />
@@ -472,7 +473,7 @@
                         <asp:FileUpload ID="FileAcceptanceOfService" runat="server" />
                     </div>   
                     <div class="form-group">
-                        <label for="SubmittedBy">
+                        <label for="SubmittedBy" data-validate="true">
                             * Submitted by
                             <span class="validation-label">* Required field</span>
                         </label>
@@ -506,18 +507,18 @@
 
         function validateUpload() {
 
-            var validateField = function (id) {
-                var element = $('input[id$="' + id + '"]');
-                var validationLabel = element.parent().find('.validation-label');
+            var fieldsToValidate = $('label[data-validate="true"]');
 
-                if (element.val().trim() === '')
+            $.each(fieldsToValidate, function (index, value) {
+                var id = $(value).attr('for');
+                var inputElement = $('input[id$="' + id + '"]');
+                var validationLabel = inputElement.parent().find('.validation-label');
+
+                if (inputElement.val().trim() === '')
                     validationLabel.fadeIn();
                 else
                     validationLabel.hide();
-            }
-
-            validateField('SubmittedBy');
-            validateField('FileJobSheet');
+            });
 
             return ($('.validation-label:visible').length === 0);
         }
