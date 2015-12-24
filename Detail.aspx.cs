@@ -560,7 +560,7 @@ public partial class Detail : System.Web.UI.Page
         File.Copy(originalJobSheetPath, modifiedJobSheetPath, true);
 
         String conn = String.Format(ExcelConnectionString, modifiedJobSheetPath);
-        String updateQuery = "update [Jobsheet${0}:{0}] set F1 = '{1}'";
+        String updateQuery = "update [Jobsheet${0}:{0}] set F1 = \"{1}\"";
 
         using (OleDbConnection connection = new OleDbConnection(conn))
         {
@@ -637,7 +637,7 @@ public partial class Detail : System.Web.UI.Page
         File.Copy(originalJobSheetDesignPath, modifiedJobSheetDesignPath, true);
 
         String conn = String.Format(ExcelConnectionString, modifiedJobSheetDesignPath);
-        String updateQuery = "update [Project Sheet${0}:{0}] set F1 = '{1}'";
+        String updateQuery = "update [Project Sheet${0}:{0}] set F1 = \"{1}\"";
 
         using (OleDbConnection connection = new OleDbConnection(conn))
         {
