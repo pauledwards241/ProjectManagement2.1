@@ -26,6 +26,7 @@
                             </HeaderTemplate>
                             <ContentTemplate>
                                 <asp:Label ID="lblEmailSuccess" runat="server" CssClass="success" Text="* Email sent successfully" Visible="false"></asp:Label>
+                                <asp:Label ID="lblSaveError" runat="server" CssClass="error" Text="* Your chosen project code already exists, please choose another." Visible="false"></asp:Label>
 
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
                                     DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"

@@ -59,7 +59,7 @@ public partial class Detail : System.Web.UI.Page
             DetailsView2Databinding();
         }
 
-        lblEmailSuccess.Visible = false;
+        lblEmailSuccess.Visible = lblSaveError.Visible = false;        
     }
 
     private void DetailsView2Databinding()
@@ -153,7 +153,15 @@ public partial class Detail : System.Web.UI.Page
 
     protected void DetailsView2_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
     {
-        TextBox TxtProjectCode = (TextBox)DetailsView2.FindControl("TxtProjectCode");
+        string project_id = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
+        string projectCode = ((TextBox)DetailsView2.FindControl("TxtProjectCode")).Text.Trim();
+
+        if (!projectBLL.ValidateProjectCode(int.Parse(project_id), projectCode))
+        {
+            lblSaveError.Visible = true;
+            return;
+        }
+
         TextBox TxtProjectname = (TextBox)DetailsView2.FindControl("TxtPorjectname");
         TextBox TxtStartDate = (TextBox)DetailsView2.FindControl("TxtStartdate");
         TextBox TxtEndDate = (TextBox)DetailsView2.FindControl("TxtEndDate");
@@ -165,8 +173,7 @@ public partial class Detail : System.Web.UI.Page
         TextBox TxtCity = (TextBox)DetailsView2.FindControl("TxtCity");
         TextBox TxtAuthority = (TextBox)DetailsView2.FindControl("TxtAuthority");
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
-        TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
-        string project_id = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
+        TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");        
         string ProjectManager = ((TextBox)DetailsView2.FindControl("TxtManager")).Text;
 
         Nullable<DateTime> startDate = null;
@@ -191,7 +198,7 @@ public partial class Detail : System.Web.UI.Page
         }
         selectedSectors = selectedSectors.Trim(',');
 
-        projectBLL.updateProject(TxtProjectCode.Text, int.Parse(DDLstatus.SelectedValue), TxtAddress.Text, TxtCity.Text,
+        projectBLL.updateProject(projectCode, int.Parse(DDLstatus.SelectedValue), TxtAddress.Text, TxtCity.Text,
                                 int.Parse(DDLDepartment.SelectedValue), selectedSectors, TxtDescription.Text, int.Parse(project_id), TxtProjectname.Text,
                                  startDate, endDate, TxtContact.Text, TxtAuthority.Text, ProjectManager);
         DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);

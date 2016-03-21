@@ -9,6 +9,9 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using ProjectTableAdapters;
+
+using System.Data.SqlClient;
+
 /// <summary>
 /// Summary description for ProjectBLL
 /// </summary>
@@ -29,7 +32,7 @@ public class ProjectBLL
      
     }
 
-	public ProjectBLL()
+    public ProjectBLL()
 	{
 		//
 		// TODO: Add constructor logic here
@@ -191,5 +194,34 @@ public class ProjectBLL
     public void DeleteProject(int projectID)
     {
         Adapter.DeleteProject(projectID);
+    }
+
+    public bool ValidateProjectCode(int? projectId, string projectCode)
+    {      
+        bool isValid = true;
+
+        String sql = "SELECT CASE WHEN NOT EXISTS " +
+                                "(SELECT * FROM Project WHERE   [Project Code] = @ProjectCode AND Project_ID != ISNULL(@ProjectId, 0)) " +
+                                "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS IsValid";
+
+        using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["MBProjectConnectionString"].ConnectionString))
+        {
+            SqlCommand cmd = new SqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@ProjectId", ((object)projectId) ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@ProjectCode", projectCode);           
+
+            try
+            {
+                conn.Open();
+                isValid = (bool)cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }                     
+        }
+
+        return isValid;
     }
 }

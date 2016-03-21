@@ -207,6 +207,12 @@ public partial class Map : System.Web.UI.Page
         }
     }
 
+    [System.Web.Services.WebMethod]
+    public static bool ValidateProjectCode(string projectCode)
+    {
+        return new ProjectBLL().ValidateProjectCode(null, projectCode);
+    }
+
     protected void DDLPageSize_SelectedIndexChanged(object sender, EventArgs e)
     {
         DropDownList DDLPageSize = (DropDownList)sender;

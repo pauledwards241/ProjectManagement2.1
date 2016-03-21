@@ -163,11 +163,18 @@ input[type=file] {
 
 /* Labels */
 
-.success {
+.success, .error {
     display: block;
     margin: 1em 0;
     font-weight: bold;
+}
+
+.success {   
     color: green;
+}
+
+.error {
+    color: red;
 }
 
 

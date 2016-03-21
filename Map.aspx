@@ -53,66 +53,44 @@
         <!-- end: #prim_links -->
         <asp:Label ID="DeleteConfirmation" runat="server" CssClass="success" Text="* Project successfully deleted" Visible="false"></asp:Label>
         <div id="content">
-            <div id="conndiv" style="width: 1000px;">
-                <div id="newProject" style="background: white; position: absolute; left: 400px; top: 200px;
-                    z-index: 100; display: none;">
-                    <div id="inner" style="width: 300px; border: solid 1px black">
-                        <asp:HiddenField ID="_TxtLat" runat="server" />
-                        <asp:HiddenField ID="_TxtLng" runat="server" />
-                        <table>
-                            <tr>
-                                <td>
-                                    <span class="FormLabel">Project Name</span>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="TextProjectName" runat="server"></asp:TextBox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="Formlabel">Project Code</span>
-                                </td>
-                                <td>
-                                    <asp:TextBox ID="TxtProjectCode" runat="server"></asp:TextBox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Project Status:
-                                </td>
-                                <td>
-                                    <asp:DropDownList ID="Dropdown_Status" runat="server" DataSourceID="SqlDataSource3"
-                                        DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect">
-                                    </asp:DropDownList>
-                                    <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
-                                        SelectCommand="SELECT [Status_ID], [Status] FROM [status] ORDER By [Status_ID]">
-                                    </asp:SqlDataSource>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Department:
-                                </td>
-                                <td>
-                                    <asp:DropDownList ID="DropDownList_department" runat="server" DataSourceID="SqlDataSource4"
-                                        CssClass="MySelect" DataTextField="Name" DataValueField="Dep_ID">
-                                    </asp:DropDownList>
-                                    <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
-                                        SelectCommand="SELECT [Dep_ID], [Name] FROM [Department] order by [Name]"></asp:SqlDataSource>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center">
-                                    <input type="button" id="savePro" title="save" value="Save" onclick="saveProject()"
-                                        class="buttonSubmit" />
-                                </td>
-                                <td align="center">
-                                    <input type="button" id="Cancel" value="Cancel" onclick="cancelSaving()" class="buttonSubmit" />
-                                </td>
-                            </tr>
-                        </table>
+            <div id="conndiv" style="width: 1000px; position: relative;">
+
+                <div id="newProject">
+
+                    <asp:HiddenField ID="_TxtLat" runat="server" />
+                    <asp:HiddenField ID="_TxtLng" runat="server" />
+
+                    <div id="new-project-validation" class="validation-summary"></div>
+
+                    <div class="form-row">
+                        <label for="TextProjectName">Project Name *</label>
+                        <asp:TextBox ID="TextProjectName" runat="server"></asp:TextBox>
                     </div>
+
+                    <div class="form-row">
+                        <label for="TxtProjectCode">Project Code *</label>
+                        <asp:TextBox ID="TxtProjectCode" runat="server"></asp:TextBox>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="Dropdown_Status">Project Status</label>
+                        <asp:DropDownList ID="Dropdown_Status" runat="server" DataSourceID="SqlDataSource3" DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect"> </asp:DropDownList>
+                        <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Status_ID], [Status] FROM [status] ORDER By [Status_ID]"> </asp:SqlDataSource>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="DropDownList_department">Department</label>
+                        <asp:DropDownList ID="DropDownList_department" runat="server" DataSourceID="SqlDataSource4" CssClass="MySelect" DataTextField="Name" DataValueField="Dep_ID"> </asp:DropDownList>
+                        <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Dep_ID], [Name] FROM [Department] order by [Name]"></asp:SqlDataSource>
+                    </div>
+
+                    <div class=" form-buttons">
+                        <input type="button" id="savePro" title="save" value="Save" onclick="saveProject()" class="buttonSubmit" />
+                        <input type="button" id="Cancel" value="Cancel" onclick="cancelSaving()" class="buttonSubmit" />
+                    </div>
+
                 </div>
+
                 <div style="width: 1000px; background: white; margin-left: 0px; margin-top: 0px;
                     border: solid 1px black">
                     <input type="text" value="" id="_Txt_address" style="width: 800px; height: 30px;
@@ -233,36 +211,75 @@
                             return datamarker;
                         }
 
+                        var newProjectModal = $('#newProject');
+                        var projectCode = document.getElementById("<%=this.TxtProjectCode.ClientID %>");
+                        var projectName = document.getElementById('<%= TextProjectName.ClientID %>');
+                        var validationSummary = $('#new-project-validation');
+
                         function CreateMarker(point) {
                             SaveLatLng(point.lat(), point.lng());
-                            $("#newProject").show();
+                            resetForm();
+                            newProjectModal.fadeIn();
+                        }
+
+                        function resetForm() {
+                            projectCode.value = projectCode.className = '';
+                            projectName.value = projectName.className = '';
+                            validationSummary.hide();
                         }
 
                         function saveProject() {
-                            var lat = parseFloat(document.getElementById("<%= this._TxtLat.ClientID %>").value);
-                            var lng = parseFloat(document.getElementById("<%= this._TxtLng.ClientID %>").value);
-                            var project_code = document.getElementById("<%=this.TxtProjectCode.ClientID %>").value;
 
-                            var DDLstatus = document.getElementById("<%= this.Dropdown_Status.ClientID%>");
-                            var status = new String(DDLstatus.options[DDLstatus.selectedIndex].text);
-                            var DDLDept = document.getElementById("<%= this.DropDownList_department.ClientID %>");
-                            var dep = new String(DDLDept.options[DDLDept.selectedIndex].text);
-                            status = status.trim();
-                            dep = dep.trim().replace('/', '-');
+                            // Required validation
+                            var projectCodeValue = $.trim(projectCode.value);
+                            var projectNameValue = $.trim(projectName.value);
 
-                            var myMarker = "GGIcon/" + status + "/" + dep + ".png";
+                            projectCode.className = projectCodeValue ? '' : 'invalid';
+                            projectName.className = projectNameValue ? '' : 'invalid';                            
 
-                            var markers = [];
-                            markers.push(addDatamarkers(lat, lng, project_code, myMarker, 'null', '', ''));
-                            var mc = new MarkerClusterer(map, markers);
+                            if (!projectCodeValue || !projectNameValue) {
+                                validationSummary.html('Please check required (*) fields.');
+                                validationSummary.slideDown();
+                                return;
+                            }
 
-                            $("#newProject").hide();
-                            __doPostBack('<%= this.BTNaddnew.UniqueID %>', '')
+                            // Validate project code
+                            PageMethods.ValidateProjectCode(projectCodeValue, function (result) {
+
+                                projectCode.className = result ? '' : 'invalid';
+
+                                if (!result) {
+                                    validationSummary.html('Your chosen project code already exists, please choose another.');
+                                    validationSummary.slideDown();
+                                    return;
+                                }
+
+                                validationSummary.slideUp();
+
+                                var lat = parseFloat(document.getElementById("<%= this._TxtLat.ClientID %>").value);
+                                var lng = parseFloat(document.getElementById("<%= this._TxtLng.ClientID %>").value);                           
+
+                                var DDLstatus = document.getElementById("<%= this.Dropdown_Status.ClientID%>");
+                                var status = new String(DDLstatus.options[DDLstatus.selectedIndex].text);
+                                status = status.trim();
+
+                                var DDLDept = document.getElementById("<%= this.DropDownList_department.ClientID %>");
+                                var dep = new String(DDLDept.options[DDLDept.selectedIndex].text);
+                                dep = dep.trim().replace('/', '-');
+
+                                var myMarker = "GGIcon/" + status + "/" + dep + ".png";
+
+                                var markers = [];
+                                markers.push(addDatamarkers(lat, lng, projectCodeValue, myMarker, 'null', '', ''));
+                                var mc = new MarkerClusterer(map, markers);
+
+                                newProjectModal.fadeOut();
+                                __doPostBack('<%= this.BTNaddnew.UniqueID %>', '')
+                            });                            
                         }
 
                         function cancelSaving() {
-                            newprojectwindow = document.getElementById("newProject");
-                            newprojectwindow.style.display = "none";
+                            newProjectModal.fadeOut();
                         }
 
                         function SaveLatLng(lat, lng) {

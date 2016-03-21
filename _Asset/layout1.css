@@ -183,3 +183,70 @@ div#footer {
 .map-grid-results .tablestyle tr td:first-child {
     border-left-style: none;
 }
+
+#newProject {
+    background: white; 
+    position: absolute; 
+    left: 50%; 
+    top: 45px; 
+    z-index: 100; 
+    display: block;
+    width: 300px;
+    padding: 10px;
+    border: solid 1px #888;
+    margin-left: -150px;
+    box-shadow: 5px 5px 5px #888;
+    display: none;
+}
+
+.validation-summary {
+    display: none;
+    padding: 0 0 10px 10px;
+    color: red;    
+    position: relative;
+}
+
+.validation-summary:before {
+    content: '*';
+    position: absolute;
+    left: 1px;
+    top: 0;
+}
+
+/* Form styles */
+
+.form-row {
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.form-buttons {
+    padding-left: 100px;
+}
+
+.form-row label, 
+.form-row input,
+.form-row select {
+    display: inline-block;
+    vertical-align: middle;
+    color: #666;
+}
+
+.form-row label {
+    width: 100px;
+}
+
+.form-row input, 
+.form-row select {
+    width: 195px;
+    padding: 3px;
+    margin-left: -4px;
+    box-sizing: border-box;
+    border: solid 1px #ccc;
+    outline: none;
+}
+
+.form-row input.invalid {
+    transition: 0.3s border-color ease;
+    border-color: red;
+}
