@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>Mayer Brown Project Management System (Beta)</title>
-    <link type="text/css" rel="stylesheet" href="_Asset/layout1.css" />
+    <link type="text/css" rel="stylesheet" href="_Asset/layout1.css?v=1" />
     <link href="niceforms/niceforms-default.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/GridView.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/Progress.css" rel="stylesheet" type="text/css" />
