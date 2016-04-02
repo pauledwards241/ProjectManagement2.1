@@ -177,5 +177,7 @@ input[type=file] {
     color: red;
 }
 
-
+.details-validation-summary {
+    padding: 8px 5px 18px 5px;
+}
 

@@ -28,6 +28,8 @@
                                 <asp:Label ID="lblEmailSuccess" runat="server" CssClass="success" Text="* Email sent successfully" Visible="false"></asp:Label>
                                 <asp:Label ID="lblSaveError" runat="server" CssClass="error" Text="* Your chosen project code already exists, please choose another." Visible="false"></asp:Label>
 
+                                <asp:ValidationSummary ID="DetailsValidationSummary" runat="server" DisplayMode ="List" CssClass="details-validation-summary" />
+
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
                                     DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
                                     Width="510px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
@@ -119,6 +121,7 @@
                                                     CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="SectorValidator" runat="server" ErrorMessage="* Please choose at least one sector before saving" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">
