@@ -443,7 +443,7 @@
                         <span class="validation-label required">* Required field</span>
                         <span class="validation-label invalid">* Incorrect password</span>
                     </label>
-                    <asp:Textbox TextMode="Password" ID="DeletePassword" runat="server" CssClass="form-control" placeholder="Delete password..." onKeyDown="handleDeleteEnter()" />
+                    <asp:Textbox TextMode="Password" ID="DeletePassword" runat="server" CssClass="form-control" placeholder="Delete password..." />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -516,21 +516,27 @@
         })
 
         function validateModalRequired(modalId) {
+            $('.validation-label').hide();
+
             var $modal = $('#' + modalId);
             var fieldsToValidate = $modal.find('label[data-validate="true"]');
+            var hasErrors = false;
 
             $.each(fieldsToValidate, function (index, value) {
                 var id = $(value).attr('for');
                 var inputElement = $('input[id$="' + id + '"]');
                 var validationLabel = inputElement.parent().find('.validation-label.required');
 
-                if (inputElement.val().trim() === '')
+                if (inputElement.val().trim() === '') {
                     validationLabel.fadeIn();
-                else
+                    hasErrors = true;
+                }                    
+                else {
                     validationLabel.hide();
+                }                    
             });
 
-            return ($modal.find('.validation-label.required:visible').length === 0);
+            return !hasErrors;
         }
 
         function validateUpload() {
@@ -560,7 +566,7 @@
         }
 
         function handleDeleteEnter(e) {
-            if (event.which == 13 || event.keyCode == 13) {
+            if (e.which == 13 || e.keyCode == 13) {
                 validateDelete();
                 return false;
             }
@@ -572,6 +578,8 @@
             var isDeleteModalOpen = $("#delete-confirmation").data()['bs.modal'].isShown;
             return !isDeleteModalOpen;
         });
+
+        $('#<%= DeletePassword.ClientID %>').on('keydown', handleDeleteEnter);
 
         //$('#upload-job-sheet').modal('show');
 
