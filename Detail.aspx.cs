@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -717,6 +718,12 @@ public partial class Detail : System.Web.UI.Page
         }
         
         Response.Redirect("newJobsheet_design.xls");
+    }
+
+    [System.Web.Services.WebMethod]
+    public static bool ValidateDeletePassword(string password)
+    {
+        return password == ConfigurationManager.AppSettings["DeletePassword"];
     }
 
     private void CheckExcellProcesses()

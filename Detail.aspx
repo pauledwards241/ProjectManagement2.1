@@ -15,7 +15,7 @@
     <div runat="server" id="ViewPanel">
         <fieldset title="Project Detail">
             <legend style="font-size: medium; font-weight: bold">Project Detail</legend>
-            <ajax:ScriptManager ID="ScriptManager1" runat="server">
+            <ajax:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
             </ajax:ScriptManager>
             <!--<ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>-->
@@ -438,11 +438,17 @@
                     <h4 class="modal-title">Delete confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this project?
+                    <p>Are you sure you want to delete this project? If so, please enter the password below.</p>
+                    <label for="DeletePassword" data-validate="true">
+                        <span class="validation-label required">* Required field</span>
+                        <span class="validation-label invalid">* Incorrect password</span>
+                    </label>
+                    <asp:Textbox TextMode="Password" ID="DeletePassword" runat="server" CssClass="form-control" placeholder="Delete password..." onKeyDown="handleDeleteEnter()" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <asp:Button ID="DeleteProject" CssClass="btn btn-primary" runat="server" Text="OK" OnClick="DeleteProject_Click" />
+                    <button type="button" class="btn btn-primary" onclick="validateDelete()">OK</button>
+                    <asp:Button ID="DeleteProject" Style="display: none;" runat="server" OnClick="DeleteProject_Click" />
                 </div>
             </div>
         </div>
@@ -460,18 +466,18 @@
                         <label for="FileJobSheet" data-validate="<%= (!HasJobSheet).ToString().ToLower() %>">
                             <asp:Label ID="JobSheetMandatoryMarker" runat="server" Text="* "></asp:Label>
                             Job Sheet
-                            <span class="validation-label">* Required field</span>
+                            <span class="validation-label required">* Required field</span>
                         </label>
                         <asp:FileUpload ID="FileJobSheet" runat="server" />
                     </div>     
                     <div class="form-group">
-                        <label for="FIleOriginalFeeProposal">
+                        <label for="FileOriginalFeeProposal">
                             Original Fee Proposal 
                         </label>
                         <asp:FileUpload ID="FileOriginalFeeProposal" runat="server" />
                     </div>    
                     <div class="form-group">
-                        <label for="FIleAcceptanceOfService">
+                        <label for="FileAcceptanceOfService">
                             Client Acceptance of Service
                         </label>
                         <asp:FileUpload ID="FileAcceptanceOfService" runat="server" />
@@ -479,7 +485,7 @@
                     <div class="form-group">
                         <label for="SubmittedBy" data-validate="true">
                             * Submitted by
-                            <span class="validation-label">* Required field</span>
+                            <span class="validation-label required">* Required field</span>
                         </label>
                         <asp:Textbox  ID="SubmittedBy" runat="server" CssClass="form-control" placeholder="Insert your name..." />
                     </div>
@@ -504,19 +510,19 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
-        $('#upload-job-sheet').on('show.bs.modal', function (e) {
+        $('#upload-job-sheet, #delete-confirmation').on('show.bs.modal', function (e) {
             $('.validation-label').hide();
-            $('.form-group input, .form-group textarea').val('');
+            $('input.form-control, textarea.form-control').val('');
         })
 
-        function validateUpload() {
-
-            var fieldsToValidate = $('label[data-validate="true"]');
+        function validateModalRequired(modalId) {
+            var $modal = $('#' + modalId);
+            var fieldsToValidate = $modal.find('label[data-validate="true"]');
 
             $.each(fieldsToValidate, function (index, value) {
                 var id = $(value).attr('for');
                 var inputElement = $('input[id$="' + id + '"]');
-                var validationLabel = inputElement.parent().find('.validation-label');
+                var validationLabel = inputElement.parent().find('.validation-label.required');
 
                 if (inputElement.val().trim() === '')
                     validationLabel.fadeIn();
@@ -524,8 +530,48 @@
                     validationLabel.hide();
             });
 
-            return ($('.validation-label:visible').length === 0);
+            return ($modal.find('.validation-label.required:visible').length === 0);
         }
+
+        function validateUpload() {
+            return validateModalRequired('upload-job-sheet');
+        }
+
+        function validateDelete() {
+            var isValid = validateModalRequired('delete-confirmation');
+
+            if (!isValid) return;
+
+            var passwordClientId = '<%= DeletePassword.ClientID %>';
+            var buttonClientId = '<%= DeleteProject.ClientID %>';
+
+            var deletePassword = document.getElementById(passwordClientId).value;
+
+            PageMethods.ValidateDeletePassword(deletePassword, function (result) {
+                // If password is correct, delete project else show validation
+                if (result) {
+                    __doPostBack('<%= DeleteProject.UniqueID %>', '')
+                }
+                else {
+                    $('#delete-confirmation .validation-label.required').fadeOut();
+                    $('#delete-confirmation .validation-label.invalid').fadeIn();
+                }
+            });      
+        }
+
+        function handleDeleteEnter(e) {
+            if (event.which == 13 || event.keyCode == 13) {
+                validateDelete();
+                return false;
+            }
+            return true;
+        }
+
+        $('#aspnetForm').on('submit', function (e) {
+            // Don't allow the default form to submit if the delete confirmation is open
+            var isDeleteModalOpen = $("#delete-confirmation").data()['bs.modal'].isShown;
+            return !isDeleteModalOpen;
+        });
 
         //$('#upload-job-sheet').modal('show');
 

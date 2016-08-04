@@ -161,6 +161,10 @@ input[type=file] {
     width: 400px;
 }
 
+    div#content .modal-dialog.delete-dialog p {
+        padding: 0;
+    }
+
 /* Labels */
 
 .success, .error {
