@@ -201,7 +201,7 @@ public class ProjectBLL
         bool isValid = true;
 
         String sql = "SELECT CASE WHEN NOT EXISTS " +
-                                "(SELECT * FROM Project WHERE   [Project Code] = @ProjectCode AND Project_ID != ISNULL(@ProjectId, 0)) " +
+                                "(SELECT * FROM Project WHERE [Project Code] = @ProjectCode AND Project_ID != ISNULL(@ProjectId, 0) AND IsDeleted = 0) " +
                                 "THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS IsValid";
 
         using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["MBProjectConnectionString"].ConnectionString))
