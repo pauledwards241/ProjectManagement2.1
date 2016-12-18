@@ -67,9 +67,9 @@ public class ProjectBLL
         return Adapter.GetData();
     }
 
-    public Project.ProjectDataTable GetProjects(Int32? statusId, Int32? departmentId, Int32? sectorId)
+    public Project.ProjectDataTable GetProjects(Int32? statusId, Int32? departmentId, Int32? sectorId, string projectSearchText)
     {
-        return Adapter.GetProjects(statusId, departmentId, sectorId);
+        return Adapter.GetProjects(statusId, departmentId, sectorId, projectSearchText);
     }
 
     public  int InsertBasics(string _pCode, int _status, int _dep, double _lat, double _lon, string _projectName)

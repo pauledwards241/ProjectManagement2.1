@@ -172,11 +172,10 @@ div#footer {
     background: white;
     border: solid 1px black;
     border-top-style: none;
-    padding-top: 8px;
 }
 
 .map-grid-results .tablestyle {
-    margin-top: 8px;
+    margin-top: 0;
     border-style: solid none solid none;
 }
 

@@ -166,7 +166,7 @@
                                 }
                             }
                         }
-
+                        
                         function addDatamarkers(lat, lon, project_code, image, project_id, status, department) {
                             var path = '<b><a href=Detail.aspx?projectID=' + project_id + '&Mode=View>View Detail</a></b>';
 
@@ -290,10 +290,22 @@
                             txt_lng.value = lng;
                         }
 
-                        function getView(lat, lng, project_code, status, department, path) {
+                        function getView(lat, lng, projectId) {
                             var point = new google.maps.LatLng(lat, lng);
                             map.setCenter(point, 20);
-                            map.openInfoWindowHtml(point, "<b>" + project_code + "</B><br/>Status: " + status + "<br/>Department: " + department + "<br/>" + path);
+                            map.setZoom(18);
+
+                            if (!markers.filter) return;
+
+                            var chosenMarkers = markers.filter(function (x) {
+                                return x.title === projectId;
+                            });
+
+                            if (!chosenMarkers.length) return;
+
+                            setTimeout(function () {
+                                google.maps.event.trigger(chosenMarkers[0], 'click');
+                            }, 500);                                                     
                         }
 
                         function FindAddress() {
@@ -327,24 +339,31 @@
                     </script>
                     <ajax:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
                     </ajax:ScriptManager>
-                    &nbsp;Status:
-                    <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource3"
-                        DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="Filter_SelectedIndexChanged"
-                        AutoPostBack="true" AppendDataBoundItems="True">
-                        <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
-                    </asp:DropDownList>
-                    Department:
-                    <asp:DropDownList ID="DropDownList2" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource4"
-                        DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
-                        <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
-                    </asp:DropDownList>
-                    Sector:
-                    <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
-                        SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector] order by [Name]"></asp:SqlDataSource>
-                    <asp:DropDownList ID="DropDownList3" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource5"
-                        DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
-                        <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
-                    </asp:DropDownList>
+                    <ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                        <ContentTemplate>
+                    <div class="project-search-panel">
+                        &nbsp;Project code or name:
+                        <asp:TextBox AutoPostBack="true" ID="txtProjectSearch" OnTextChanged="Filter_SelectedIndexChanged" runat="server" placeholder="Enter project code or name..." />
+                        &nbsp;Status:
+                        <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource3"
+                            DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="Filter_SelectedIndexChanged"
+                            AutoPostBack="true" AppendDataBoundItems="True">
+                            <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
+                        </asp:DropDownList>
+                        Department:
+                        <asp:DropDownList ID="DropDownList2" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource4"
+                            DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
+                            <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
+                        </asp:DropDownList>
+                        Sector:
+                        <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
+                            SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector] order by [Name]"></asp:SqlDataSource>
+                        <asp:DropDownList ID="DropDownList3" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource5"
+                            DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
+                            <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+
                     <script type="text/javascript">
 
                         function onUpdating() {
@@ -385,9 +404,9 @@
                         }
             
                     </script>
-                    &nbsp;
-                    <ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
-                        <ContentTemplate>
+                   
+                    <%--<ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                        <ContentTemplate>--%>
                             <asp:GridView ID="GridView1" runat="server" CssClass="tablestyle" OnRowCommand="GridView1_RowCommand"
                                 OnPageIndexChanging="GridView1_PageIndexChanging" DataKeyNames="Project_ID" AutoGenerateColumns="False"
                                 AllowPaging="True" OnRowDataBound="GridView1_RowDataBound" Width="100%" PageSize="5">

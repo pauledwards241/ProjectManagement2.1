@@ -165,6 +165,23 @@ input[type=file] {
         padding: 0;
     }
 
+.project-search-panel {
+    padding: 8px 0;
+}
+
+    .project-search-panel input,
+    .project-search-panel select {
+        font-size: 13px;
+        height: 25px;
+        width: 150px;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .project-search-panel input {
+        width: 200px;    
+    }
+
 /* Labels */
 
 .success, .error {

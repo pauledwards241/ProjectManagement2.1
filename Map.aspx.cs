@@ -51,12 +51,14 @@ public partial class Map : System.Web.UI.Page
         Int32? statusId = Int32.Parse(DropDownList1.SelectedValue);
         Int32? departmentId = Int32.Parse(DropDownList2.SelectedValue);
         Int32? sectorId = Int32.Parse(DropDownList3.SelectedValue);
+        string projectSearchText = txtProjectSearch.Text.Trim();
 
         statusId = statusId >= 0 ? statusId : null;
         departmentId = departmentId >= 0 ? departmentId : null;
         sectorId = sectorId >= 0 ? sectorId : null;
+        projectSearchText = !string.IsNullOrEmpty(projectSearchText) ? projectSearchText : null;
 
-        projectTable = _projectbll.GetProjects(statusId, departmentId, sectorId);
+        projectTable = _projectbll.GetProjects(statusId, departmentId, sectorId, projectSearchText);
 
         total = projectTable.Count;
         GridView1.DataSource = projectTable;
@@ -92,12 +94,9 @@ public partial class Map : System.Web.UI.Page
             Label _TextLon = (Label)e.Row.FindControl("Txt_lon");
             Label _TextProjectID = (Label)e.Row.FindControl("Txt_ID");
             string strProjectID = _TextProjectID.Text;
-            string project_Code = e.Row.Cells[0].Text;
-            project_Code = project_Code.Replace("'", "\"");
             string status = e.Row.Cells[2].Text;
             string department = e.Row.Cells[4].Text;
-            string path = string.Format("<b><a href=Detail.aspx?projectID={0}&Mode=View>View Detail</a></b>", strProjectID);
-            _mapbutton.Attributes.Add("onclick", string.Format("getView({0},{1},'{2}','{3}','{4}','{5}')", _TextLat.Text, _TextLon.Text, Server.HtmlEncode(project_Code), status, department, path));
+            _mapbutton.Attributes.Add("onclick", string.Format("getView({0},{1}, '{2}')", _TextLat.Text, _TextLon.Text, strProjectID));
 
             DropDownList ddlStatus = (DropDownList)e.Row.FindControl("ddlStatus");
             ddlStatus.SelectedValue = status;
