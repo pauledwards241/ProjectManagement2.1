@@ -17,7 +17,7 @@
     <link href="_Asset/global.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&key=<%= ConfigurationManager.AppSettings["GoogleAPIKey"] %>"></script>
     <script type="text/javascript" src="js/markerclusterer_compiled.js"></script>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css"
         rel="stylesheet" type="text/css" />
