@@ -8,9 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Microsoft.Office.Interop.Excel;
 using Table = iTextSharp.text.Table;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using CheckBox = System.Web.UI.WebControls.CheckBox;
 using Label = System.Web.UI.WebControls.Label;
@@ -724,33 +722,5 @@ public partial class Detail : System.Web.UI.Page
     public static bool ValidateDeletePassword(string password)
     {
         return password == ConfigurationManager.AppSettings["DeletePassword"];
-    }
-
-    private void CheckExcellProcesses()
-    {
-        Process[] AllProcesses = Process.GetProcessesByName("excel");
-        myHashtable = new Hashtable();
-        int iCount = 0;
-
-        foreach (Process ExcelProcess in AllProcesses)
-        {
-            myHashtable.Add(ExcelProcess.Id, iCount);
-            iCount = iCount + 1;
-        }
-    }
-
-    private void KillExcel()
-    {
-
-        Process[] AllProcesses = Process.GetProcessesByName("excel");
-
-        // check to kill the right process
-        foreach (Process ExcelProcess in AllProcesses)
-        {
-            if (myHashtable.ContainsKey(ExcelProcess.Id) == false)
-                ExcelProcess.Kill();
-        }
-
-        AllProcesses = null;
     }
 }
